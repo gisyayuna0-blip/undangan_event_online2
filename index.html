@@ -1288,5 +1288,16 @@ function showToast(msg) {
   setTimeout(() => { toast.classList.remove('show'); }, 2500);
 }
 </script>
+  <script>
+const music = document.getElementById("bgMusic");
+
+window.addEventListener("load", () => {
+    music.volume = 1;
+});
+
+document.body.addEventListener("click", () => {
+    music.play();
+}, { once: true });
+</script>
 </body>
 </html>
