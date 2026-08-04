@@ -1197,8 +1197,12 @@ textarea.wa-input {
 <script>
   const music = document.getElementById("bgMusic");
 
-document.addEventListener("click", function () {
-    music.play();
+document.addEventListener("click", async function () {
+    try {
+        await music.play();
+    } catch (e) {
+        console.log(e);
+    }
 }, { once: true });
   
 // Loading Screen
