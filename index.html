@@ -1291,12 +1291,14 @@ function showToast(msg) {
   <script>
 const music = document.getElementById("bgMusic");
 
-window.addEventListener("load", () => {
-    music.volume = 1;
-});
-
-document.body.addEventListener("click", () => {
-    music.play();
+document.addEventListener("click", async () => {
+    try {
+        await music.play();
+        alert("Musik berhasil diputar");
+    } catch (e) {
+        alert(e.message);
+        console.log(e);
+    }
 }, { once: true });
 </script>
 </body>
