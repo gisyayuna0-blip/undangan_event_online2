@@ -1288,18 +1288,15 @@ function showToast(msg) {
   setTimeout(() => { toast.classList.remove('show'); }, 2500);
 }
 </script>
-  <script>
-const music = document.getElementById("bgMusic");
+  const music = document.getElementById("bgMusic");
 
-document.addEventListener("click", async () => {
-    try {
-        await music.play();
-        alert("Musik berhasil diputar");
-    } catch (e) {
-        alert(e.message);
-        console.log(e);
-    }
+window.onload = function () {
+    music.volume = 1;
+    music.play().catch(() => {});
+};
+
+document.addEventListener("click", () => {
+    music.play();
 }, { once: true });
-</script>
 </body>
 </html>
