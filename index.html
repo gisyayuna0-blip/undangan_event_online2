@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>MAESTRO KINGDOM FEST 2025</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Poppins:wght@300;400;500;600;700;800&family=Great+Vibes&display=swap" rel="stylesheet">
+<script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --deep:#1a0a2e;--dark:#2D0831;--mid:#4A0E4E;--light:#7B2D8E;--pale:#B565D9;
+  --gold-d:#B8860B;--gold:#D4AF37;--gold-l:#FFD700;--gold-p:#FFF4C1;
+  --red:#C41E3A;--pink:#FF6B9D;--pink-l:#FFB6D5;--cream:#FFF8E7;
+}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'Poppins',sans-serif;background:var(--deep);color:var(--cream)}
+.slide{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .7s ease,transform .7s ease;transform:scale(.96);z-index:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.slide.active{opacity:1;pointer-events:all;transform:scale(1);z-index:10}
+.slide-inner{width:100%;max-width:520px;padding:24px 20px 90px;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative}
+
+/* NAV */
+.nav-bar{position:fixed;bottom:0;left:0;right:0;height:64px;display:flex;align-items:center;justify-content:center;gap:10px;z-index:100;background:linear-gradient(transparent,rgba(26,10,46,.95) 40%);opacity:0;pointer-events:none;transition:opacity .5s}
+.nav-bar.show{opacity:1;pointer-events:all}
+.nav-btn{width:40px;height:40px;border-radius:50%;border:1.5px solid rgba(212,175,55,.4);background:rgba(74,14,78,.6);color:var(--gold);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;backdrop-filter:blur(8px);font-size:18px}
+.nav-btn:hover{background:var(--gold);color:var(--deep);border-color:var(--gold)}
+.nav-btn:disabled{opacity:.2;cursor:default;pointer-events:none}
+.dots{display:flex;gap:6px}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(212,175,55,.25);transition:all .4s;cursor:pointer}
+.dot.active{background:var(--gold);box-shadow:0 0 10px rgba(255,215,0,.5);width:24px;border-radius:4px}
+
+/* COMMON */
+.ornament-line{display:flex;align-items:center;gap:12px;margin:16px 0;color:var(--gold);font-size:14px;opacity:.6}
+.ornament-line::before,.ornament-line::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.section-title{font-family:'Cinzel Decorative',serif;font-size:clamp(20px,5vw,30px);color:var(--gold-l);text-align:center;line-height:1.3;text-shadow:0 0 30px rgba(255,215,0,.2)}
+.section-sub{font-family:'Great Vibes',cursive;font-size:clamp(22px,6vw,36px);color:var(--pink);text-align:center;margin-top:4px}
+.gold-text{color:var(--gold-l)}
+.pink-text{color:var(--pink)}
+.royal-frame{position:relative;border:1.5px solid rgba(212,175,55,.25);padding:28px 20px;margin:16px 0;border-radius:4px}
+.royal-frame .corner{position:absolute;width:24px;height:24px;border-color:var(--gold);border-style:solid}
+.royal-frame .c-tl{top:-1px;left:-1px;border-width:2px 0 0 2px}
+.royal-frame .c-tr{top:-1px;right:-1px;border-width:2px 2px 0 0}
+.royal-frame .c-bl{bottom:-1px;left:-1px;border-width:0 0 2px 2px}
+.royal-frame .c-br{bottom:-1px;right:-1px;border-width:0 2px 2px 0}
+.badge{display:inline-block;background:linear-gradient(135deg,var(--gold),var(--gold-d));color:var(--deep);font-size:10px;font-weight:700;padding:4px 14px;border-radius:20px;letter-spacing:1.5px;text-transform:uppercase}
+.glow-card{background:rgba(74,14,78,.35);border:1px solid rgba(212,175,55,.15);border-radius:16px;padding:24px;backdrop-filter:blur(12px);transition:all .4s}
+.glow-card:hover{border-color:rgba(212,175,55,.4);box-shadow:0 0 30px rgba(212,175,55,.08)}
+.btn-gold{display:inline-flex;align-items:center;gap:8px;padding:14px 36px;background:linear-gradient(135deg,var(--gold-l),var(--gold),var(--gold-d));color:var(--deep);font-family:'Poppins',sans-serif;font-weight:700;font-size:14px;border:none;border-radius:50px;cursor:pointer;transition:all .3s;text-transform:uppercase;letter-spacing:1px;box-shadow:0 4px 20px rgba(255,215,0,.3)}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(255,215,0,.5)}
+
+.bg-sparkle{position:absolute;width:3px;height:3px;background:var(--gold-l);border-radius:50%;animation:twinkle 3s infinite;opacity:0}
+@keyframes twinkle{0%,100%{opacity:0;transform:scale(.5)}50%{opacity:1;transform:scale(1.2)}}
+
+/* ===== MUSIC PLAYER ===== */
+.music-player{
+  position:fixed;
+  bottom:76px;
+  right:16px;
+  z-index:200;
+  display:flex;
+  align-items:flex-end;
+  gap:0;
+  flex-direction:row-reverse;
+}
+.music-btn{
+  width:48px;height:48px;border-radius:50%;
+  border:1.5px solid rgba(212,175,55,.5);
+  background:rgba(26,10,46,.85);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  color:var(--gold-l);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .4s;
+  position:relative;overflow:hidden;
+  flex-shrink:0;
+  box-shadow:0 4px 20px rgba(0,0,0,.4),0 0 15px rgba(255,215,0,.08);
+}
+.music-btn:hover{
+  background:rgba(212,175,55,.2);
+  border-color:var(--gold-l);
+  box-shadow:0 4px 25px rgba(255,215,0,.2);
+  transform:scale(1.05);
+}
+.music-btn.playing{
+  border-color:var(--gold-l);
+  box-shadow:0 4px 25px rgba(255,215,0,.25),0 0 20px rgba(255,215,0,.1);
+  animation:btnPulse 2s ease-in-out infinite;
+}
+@keyframes btnPulse{
+  0%,100%{box-shadow:0 4px 25px rgba(255,215,0,.25),0 0 20px rgba(255,215,0,.1)}
+  50%{box-shadow:0 4px 30px rgba(255,215,0,.4),0 0 30px rgba(255,215,0,.15)}
+}
+.music-btn .iconify{font-size:22px;transition:all .3s}
+.music-btn.playing .iconify{filter:drop-shadow(0 0 4px rgba(255,215,0,.5))}
+
+/* Visualizer bars */
+.visualizer{
+  display:flex;align-items:flex-end;gap:2px;
+  height:32px;padding:4px 8px;
+  background:rgba(26,10,46,.85);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(212,175,55,.2);
+  border-radius:20px;
+  opacity:0;transform:translateX(10px) scaleX(.8);
+  transform-origin:right center;
+  transition:all .4s cubic-bezier(.4,0,.2,1);
+  pointer-events:none;
+}
+.visualizer.show{opacity:1;transform:translateX(0) scaleX(1)}
+.viz-bar{
+  width:3px;border-radius:2px;
+  background:linear-gradient(to top,var(--gold),var(--pink-l));
+  transition:height .15s ease;
+  height:4px;
+}
+.visualizer.playing .viz-bar{animation:vizBounce var(--d) var(--delay) infinite ease-in-out alternate}
+@keyframes vizBounce{
+  0%{height:4px;opacity:.4}
+  100%{height:var(--h);opacity:1}
+}
+
+/* Song info tooltip */
+.song-tooltip{
+  position:absolute;
+  bottom:calc(100% + 10px);
+  right:0;
+  white-space:nowrap;
+  background:rgba(26,10,46,.92);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(212,175,55,.2);
+  border-radius:10px;
+  padding:8px 14px;
+  font-size:10px;
+  color:rgba(255,248,231,.7);
+  opacity:0;transform:translateY(6px);
+  transition:all .3s;pointer-events:none;
+}
+.song-tooltip::after{
+  content:'';position:absolute;top:100%;right:20px;
+  border:5px solid transparent;border-top-color:rgba(26,10,46,.92);
+}
+.music-btn:hover .song-tooltip,
+.music-btn.playing .song-tooltip{
+  opacity:1;transform:translateY(0);
+}
+.song-tooltip .song-title{color:var(--gold-l);font-weight:600;font-size:11px}
+.song-tooltip .song-artist{margin-top:1px}
+
+/* ===== SLIDE 1: ENVELOPE ===== */
+.envelope-wrap{display:flex;flex-direction:column;align-items:center;gap:24px;cursor:pointer}
+.envelope{width:280px;height:190px;position:relative;perspective:800px}
+.env-body{width:100%;height:100%;background:linear-gradient(145deg,#5C2D0E,#8B4513,#A0522D);border-radius:8px;position:relative;box-shadow:0 10px 40px rgba(0,0,0,.5),inset 0 0 30px rgba(0,0,0,.2);overflow:hidden}
+.env-body::before{content:'';position:absolute;inset:8px;border:1px solid rgba(212,175,55,.3);border-radius:4px}
+.env-body::after{content:'⚜';position:absolute;bottom:12px;left:50%;transform:translateX(-50%);font-size:16px;color:rgba(212,175,55,.3)}
+.env-flap{position:absolute;top:0;left:0;width:100%;height:110px;background:linear-gradient(180deg,#A0522D,#8B4513);clip-path:polygon(0 0,50% 100%,100% 0);transform-origin:top center;transition:transform .8s cubic-bezier(.4,0,.2,1);z-index:3;border-radius:8px 8px 0 0}
+.envelope.opened .env-flap{transform:rotateX(180deg)}
+.env-letter{position:absolute;top:20px;left:20px;right:20px;bottom:20px;background:linear-gradient(135deg,var(--cream),#FFF5D4);border-radius:4px;z-index:2;transition:transform .8s .3s cubic-bezier(.4,0,.2,1),opacity .5s .8s;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,.2)}
+.env-letter span{font-family:'Cinzel Decorative',serif;font-size:11px;color:var(--mid);text-align:center;line-height:1.6;padding:8px}
+.envelope.opened .env-letter{transform:translateY(-60px);opacity:0}
+.seal{width:64px;height:64px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#E8354A,var(--red),#8B0000);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:5;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 15px rgba(196,30,58,.5),inset 0 -2px 4px rgba(0,0,0,.3);transition:all .4s;cursor:pointer}
+.seal::before{content:'';position:absolute;inset:4px;border-radius:50%;border:1.5px solid rgba(255,255,255,.2)}
+.seal-icon{font-size:24px;color:rgba(255,255,255,.9);filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))}
+.seal:hover{transform:translate(-50%,-50%) scale(1.08);box-shadow:0 6px 25px rgba(196,30,58,.7)}
+.seal.pulse{animation:sealPulse .6s}
+@keyframes sealPulse{0%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.15)}100%{transform:translate(-50%,-50%) scale(1)}}
+.env-hint{font-size:12px;color:rgba(255,248,231,.5);letter-spacing:2px;text-transform:uppercase;animation:hintBlink 2s infinite}
+@keyframes hintBlink{0%,100%{opacity:.3}50%{opacity:.8}}
+
+.particle{position:fixed;border-radius:50%;pointer-events:none;z-index:9999;animation:pBurst .9s ease-out forwards}
+@keyframes pBurst{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0}}
+
+/* ===== SLIDE 2: SAMBUTAN ===== */
+.sambutan-text{font-size:14px;line-height:1.9;text-align:center;color:rgba(255,248,231,.8);font-weight:300}
+.sambutan-text strong{color:var(--gold-l);font-weight:600}
+.islamic-greeting{font-family:'Playfair Display',serif;font-size:clamp(16px,4vw,20px);color:var(--gold-l);font-style:italic;text-align:center;margin-bottom:8px}
+
+/* ===== SLIDE 3: TEMPAT & DENAH ===== */
+.info-row{display:flex;align-items:center;gap:12px;margin:10px 0;font-size:13px;color:rgba(255,248,231,.85)}
+.info-row .iconify{color:var(--gold);font-size:20px;flex-shrink:0}
+.denah-wrap{width:100%;max-width:380px;margin:16px auto;border-radius:12px;overflow:hidden;border:1.5px solid rgba(212,175,55,.2);background:var(--dark)}
+.denah-wrap svg{width:100%;height:auto;display:block}
+
+/* ===== SLIDE 4: RANGKAIAN ===== */
+.timeline{position:relative;padding-left:28px}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--gold),var(--pink),var(--gold))}
+.tl-item{position:relative;margin-bottom:20px;padding-left:16px}
+.tl-item::before{content:'';position:absolute;left:-24px;top:6px;width:12px;height:12px;border-radius:50%;border:2px solid var(--gold);background:var(--deep)}
+.tl-item:nth-child(even)::before{border-color:var(--pink)}
+.tl-time{font-size:11px;font-weight:700;color:var(--gold-l);letter-spacing:1px;text-transform:uppercase}
+.tl-title{font-size:14px;font-weight:600;color:var(--cream);margin:2px 0}
+.tl-desc{font-size:12px;color:rgba(255,248,231,.5);font-weight:300}
+
+/* ===== SLIDE 5: STAR GUEST ===== */
+.artist-section{width:100%;display:flex;flex-direction:column;gap:20px;align-items:center}
+.poster-frame{
+  position:relative;width:100%;max-width:320px;padding:12px;
+  border-radius:16px;transition:all .6s cubic-bezier(.4,0,.2,1);
+}
+.poster-frame:hover{transform:translateY(-6px) scale(1.01)}
+.poster-frame::before{
+  content:'';position:absolute;inset:0;border-radius:16px;padding:2px;
+  background:var(--frame-grad, linear-gradient(135deg, var(--gold-l), var(--pink), var(--gold), var(--pink-l), var(--gold-l)));
+  -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  background-size:300% 300%;animation:borderShimmer 4s linear infinite;
+}
+@keyframes borderShimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.poster-frame::after{
+  content:'';position:absolute;inset:4px;border-radius:14px;
+  box-shadow:inset 0 0 30px rgba(212,175,55,.08);pointer-events:none;z-index:2;
+}
+.poster-img-wrap{
+  position:relative;width:100%;border-radius:10px;overflow:hidden;
+  box-shadow:0 8px 32px rgba(0,0,0,.4);
+}
+.poster-img{width:100%;height:auto;display:block;transition:all .6s cubic-bezier(.4,0,.2,1)}
+.poster-frame:hover .poster-img{transform:scale(1.03);filter:brightness(1.05) saturate(1.1)}
+.poster-badge{
+  position:absolute;top:16px;right:16px;z-index:5;padding:6px 14px;border-radius:20px;
+  font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 4px 15px rgba(0,0,0,.3);
+}
+.badge-naykila{background:rgba(255,107,157,.85);color:#fff;border:1px solid rgba(255,255,255,.2)}
+.badge-hivi{background:rgba(212,175,55,.9);color:var(--deep);border:1px solid rgba(255,255,255,.3)}
+.frame-crown{
+  position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:28px;z-index:6;
+  filter:drop-shadow(0 2px 8px rgba(255,215,0,.5));animation:crownFloat 3s ease-in-out infinite;
+}
+@keyframes crownFloat{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-4px)}}
+.frame-ornament{position:absolute;font-size:16px;opacity:.5;z-index:3;animation:ornamentGlow 3s ease-in-out infinite}
+@keyframes ornamentGlow{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:.8;transform:scale(1.15)}}
+.fo-tl{top:2px;left:2px}.fo-tr{top:2px;right:2px}.fo-bl{bottom:2px;left:2px}.fo-br{bottom:2px;right:2px}
+.poster-info{text-align:center;width:100%;max-width:320px;padding:0 4px}
+.poster-name{font-family:'Cinzel Decorative',serif;font-size:clamp(20px,5.5vw,28px);line-height:1.3}
+.poster-desc{font-size:12px;color:rgba(255,248,231,.55);margin-top:6px;font-weight:300;line-height:1.6}
+.poster-divider{display:flex;align-items:center;gap:10px;margin:14px 0;opacity:.4}
+.poster-divider::before,.poster-divider::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+
+/* ===== SLIDE 6: TIKET ===== */
+.tickets-grid{display:flex;flex-direction:column;gap:14px;width:100%}
+.ticket-card{border-radius:16px;overflow:hidden;position:relative;border:1.5px solid rgba(212,175,55,.15);transition:all .5s;background:rgba(74,14,78,.3);backdrop-filter:blur(8px)}
+.ticket-card:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,.3)}
+.ticket-card.vip{border-color:rgba(255,215,0,.4);background:linear-gradient(135deg,rgba(212,175,55,.15),rgba(74,14,78,.4))}
+.ticket-card.vip .ticket-price{color:var(--gold-l)}
+.ticket-header{padding:16px 20px 8px;display:flex;justify-content:space-between;align-items:center}
+.ticket-tier{font-family:'Cinzel Decorative',serif;font-size:14px;color:var(--cream)}
+.ticket-tag{font-size:9px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:1px;text-transform:uppercase}
+.tag-presale{background:rgba(123,45,142,.6);color:var(--pink-l)}
+.tag-regular{background:rgba(74,14,78,.6);color:var(--pale)}
+.tag-vip{background:linear-gradient(135deg,var(--gold),var(--gold-d));color:var(--deep)}
+.ticket-price{font-size:28px;font-weight:800;text-align:center;padding:8px 20px;color:var(--cream)}
+.ticket-price small{font-size:13px;font-weight:400;opacity:.6}
+.ticket-benefits{padding:8px 20px 16px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.ticket-benefits span{font-size:10px;padding:4px 10px;border-radius:20px;background:rgba(255,248,231,.06);color:rgba(255,248,231,.6);border:1px solid rgba(255,248,231,.08)}
+
+/* ===== SLIDE 7: PEMBAYARAN ===== */
+.qr-box{width:180px;height:180px;margin:16px auto;border-radius:12px;overflow:hidden;border:2px solid var(--gold);padding:8px;background:#fff}
+.qr-box img{width:100%;height:100%;object-fit:contain}
+.bank-item{display:flex;align-items:center;gap:14px;padding:14px 16px;background:rgba(74,14,78,.3);border:1px solid rgba(212,175,55,.1);border-radius:12px;margin:8px 0;transition:all .3s}
+.bank-item:hover{border-color:rgba(212,175,55,.3)}
+.bank-logo{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;color:#fff;flex-shrink:0}
+.bank-info{flex:1}
+.bank-name{font-size:13px;font-weight:600;color:var(--cream)}
+.bank-number{font-size:15px;font-weight:700;color:var(--gold-l);letter-spacing:1px;margin-top:2px}
+.bank-holder{font-size:10px;color:rgba(255,248,231,.5);margin-top:1px}
+.ewallet-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px}
+.ewallet-item{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;border-radius:12px;background:rgba(74,14,78,.3);border:1px solid rgba(212,175,55,.08);transition:all .3s}
+.ewallet-item:hover{border-color:rgba(212,175,55,.3);transform:translateY(-2px)}
+.ewallet-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:10px;color:#fff}
+.ewallet-name{font-size:9px;color:rgba(255,248,231,.6);font-weight:500}
+
+/* ===== SLIDE 8: EYE CATCHING ===== */
+.ec-line{opacity:0;transform:translateY(30px);transition:all .7s cubic-bezier(.4,0,.2,1);margin:12px 0}
+.slide.active .ec-line{opacity:1;transform:translateY(0)}
+.slide.active .ec-line:nth-child(1){transition-delay:.2s}
+.slide.active .ec-line:nth-child(2){transition-delay:.6s}
+.slide.active .ec-line:nth-child(3){transition-delay:1s}
+.slide.active .ec-line:nth-child(4){transition-delay:1.4s}
+.slide.active .ec-line:nth-child(5){transition-delay:1.8s}
+.ec-big{font-family:'Cinzel Decorative',serif;font-size:clamp(24px,7vw,40px);text-align:center;line-height:1.3}
+.ec-med{font-size:clamp(16px,4.5vw,22px);text-align:center;font-weight:600;line-height:1.5}
+.ec-small{font-size:13px;text-align:center;color:rgba(255,248,231,.5);font-weight:300}
+
+/* ===== SLIDE 9: PENUTUP ===== */
+.floating-ornament{position:absolute;pointer-events:none;opacity:.5;animation:floatOrn var(--dur) var(--delay) infinite ease-in-out;z-index:0}
+@keyframes floatOrn{
+  0%,100%{transform:translate(0,0) rotate(var(--r1)) scale(1)}
+  25%{transform:translate(var(--x1),var(--y1)) rotate(var(--r2)) scale(1.1)}
+  50%{transform:translate(var(--x2),var(--y2)) rotate(var(--r3)) scale(.95)}
+  75%{transform:translate(var(--x3),var(--y3)) rotate(var(--r4)) scale(1.05)}
+}
+.sponsor-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px;width:100%}
+.sponsor-item{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 8px;border-radius:12px;background:rgba(255,248,231,.04);border:1px solid rgba(255,248,231,.06);min-height:70px;transition:all .3s}
+.sponsor-item:hover{border-color:rgba(212,175,55,.3);background:rgba(255,248,231,.08)}
+.sponsor-icon{font-size:22px;margin-bottom:4px}
+.sponsor-name{font-size:9px;font-weight:600;color:rgba(255,248,231,.6);text-align:center;letter-spacing:.5px;text-transform:uppercase}
+
+@keyframes fadeInUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.anim-in{animation:fadeInUp .7s ease-out both}
+.anim-d1{animation-delay:.1s}.anim-d2{animation-delay:.2s}.anim-d3{animation-delay:.3s}.anim-d4{animation-delay:.4s}.anim-d5{animation-delay:.5s}.anim-d6{animation-delay:.6s}
+@keyframes gentleFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.gentle-float{animation:gentleFloat 4s ease-in-out infinite}
+@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
+.shimmer-text{background:linear-gradient(90deg,var(--gold-l),var(--cream),var(--gold-l),var(--cream),var(--gold-l));background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 4s linear infinite}
+
+.slide::-webkit-scrollbar{width:3px}
+.slide::-webkit-scrollbar-track{background:transparent}
+.slide::-webkit-scrollbar-thumb{background:rgba(212,175,55,.2);border-radius:10px}
+
+@media(min-width:640px){
+  .tickets-grid{flex-direction:row;gap:12px}
+  .ticket-card{flex:1}
+  .poster-frame{max-width:340px}
+  .sponsor-grid{grid-template-columns:repeat(4,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- AUDIO ELEMENT -->
+<audio id="bgMusic" loop preload="auto">
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+
+<!-- MUSIC PLAYER UI -->
+<div class="music-player" id="musicPlayer">
+  <div class="visualizer" id="visualizer">
+    <div class="viz-bar" style="--d:.45s;--delay:0s;--h:20px"></div>
+    <div class="viz-bar" style="--d:.55s;--delay:.08s;--h:28px"></div>
+    <div class="viz-bar" style="--d:.4s;--delay:.15s;--h:18px"></div>
+    <div class="viz-bar" style="--d:.6s;--delay:.05s;--h:24px"></div>
+    <div class="viz-bar" style="--d:.5s;--delay:.12s;--h:30px"></div>
+    <div class="viz-bar" style="--d:.45s;--delay:.2s;--h:16px"></div>
+    <div class="viz-bar" style="--d:.55s;--delay:.03s;--h:22px"></div>
+    <div class="viz-bar" style="--d:.42s;--delay:.18s;--h:26px"></div>
+  </div>
+  <button class="music-btn" id="musicBtn" onclick="toggleMusic()">
+    <span class="iconify" id="musicIcon" data-icon="mdi:music-note-off"></span>
+    <div class="song-tooltip">
+      <div class="song-title">♪ Kingdom Festival Theme</div>
+      <div class="song-artist">Maestro Kingdom Fest 2025</div>
+    </div>
+  </button>
+</div>
+
+<!-- ==================== SLIDE 1: AMPLOP ==================== -->
+<div class="slide active" id="slide-0">
+  <div class="slide-inner" style="justify-content:center">
+    <div id="sparkles-0"></div>
+    <p class="anim-in anim-d1" style="font-family:'Great Vibes',cursive;font-size:clamp(22px,6vw,32px);color:var(--gold-l);text-align:center">Sebuah Undangan Spesial</p>
+    <div class="ornament-line anim-in anim-d2">⚜</div>
+    <div class="envelope-wrap anim-in anim-d3" id="envelopeWrap" onclick="openEnvelope()">
+      <div class="envelope" id="envelope">
+        <div class="env-flap"></div>
+        <div class="env-body">
+          <div class="env-letter">
+            <span>MAESTRO<br>KINGDOM FEST<br>✦ 2025 ✦</span>
+          </div>
+        </div>
+        <div class="seal" id="seal">
+          <span class="seal-icon">♛</span>
+        </div>
+      </div>
+    </div>
+    <p class="env-hint anim-in anim-d4">Ketuk segel untuk membuka</p>
+  </div>
+</div>
+
+<!-- ==================== SLIDE 2: SAMBUTAN ==================== -->
+<div class="slide" id="slide-1">
+  <div class="slide-inner">
+    <div id="sparkles-1"></div>
+    <p class="islamic-greeting anim-in">Assalamu'alaikum Warahmatullahi Wabarakatuh</p>
+    <div class="ornament-line anim-in anim-d1">✦</div>
+    <div class="royal-frame anim-in anim-d2" style="width:100%">
+      <span class="corner c-tl"></span><span class="corner c-tr"></span><span class="corner c-bl"></span><span class="corner c-br"></span>
+      <p class="sambutan-text">
+        Alhamdulillah, segala puji bagi Allah SWT yang telah memberikan keberkahan dan kemudahan.<br><br>
+        Dengan penuh kebahagiaan, <strong>SMK Maestro Islamic School Banjarmasin</strong> mengundangmu untuk hadir dalam perayaan akbar tahun ini —<br><br>
+        <span style="font-family:'Cinzel Decorative',serif;font-size:18px;color:var(--gold-l)">MAESTRO KINGDOM FEST 2025</span><br><br>
+        Sebuah festival bertema kerajaan yang akan membawamu ke pengalaman tak terlupakan bersama sahabat-sahabat terbaikmu! 🎭👑
+      </p>
+    </div>
+    <div class="ornament-line anim-in anim-d3">⚜</div>
+    <p class="anim-in anim-d4" style="font-size:12px;color:rgba(255,248,231,.4);text-align:center;font-style:italic">Geser ke bawah untuk melihat info lengkap</p>
+  </div>
+</div>
+
+<!-- ==================== SLIDE 3: TEMPAT & DENAH ==================== -->
+<div class="slide" id="slide-2">
+  <div class="slide-inner">
+    <div id="sparkles-2"></div>
+    <p class="section-sub anim-in">Lokasi Kerajaan</p>
+    <h2 class="section-title anim-in anim-d1" style="font-size:clamp(18px,4.5vw,26px)">Peta & Denah Acara</h2>
+    <div class="ornament-line anim-in anim-d1">✦</div>
+    <div class="glow-card anim-in anim-d2" style="width:100%">
+      <div class="info-row">
+        <span class="iconify" data-icon="mdi:castle"></span>
+        <span><strong>SMK Maestro Islamic School</strong><br>Jl. AHM No.3, Banjarmasin</span>
+      </div>
+      <div class="info-row">
+        <span class="iconify" data-icon="mdi:calendar-star"></span>
+        <span><strong>Sabtu, 15 November 2025</strong></span>
+      </div>
+      <div class="info-row">
+        <span class="iconify" data-icon="mdi:clock-outline"></span>
+        <span><strong>08.00 – 17.00 WITA</strong></span>
+      </div>
+    </div>
+    <div class="denah-wrap anim-in anim-d3">
+      <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+        <rect fill="#1a0a2e" width="400" height="320"/>
+        <line x1="0" y1="80" x2="400" y2="80" stroke="rgba(212,175,55,.06)"/>
+        <line x1="0" y1="160" x2="400" y2="160" stroke="rgba(212,175,55,.06)"/>
+        <line x1="0" y1="240" x2="400" y2="240" stroke="rgba(212,175,55,.06)"/>
+        <line x1="100" y1="0" x2="100" y2="320" stroke="rgba(212,175,55,.06)"/>
+        <line x1="200" y1="0" x2="200" y2="320" stroke="rgba(212,175,55,.06)"/>
+        <line x1="300" y1="0" x2="300" y2="320" stroke="rgba(212,175,55,.06)"/>
+        <rect x="100" y="15" width="200" height="55" rx="8" fill="#C41E3A" opacity=".85"/>
+        <text x="200" y="40" text-anchor="middle" fill="#FFF8E7" font-size="11" font-weight="700" font-family="Cinzel Decorative,serif">MAIN STAGE</text>
+        <text x="200" y="56" text-anchor="middle" fill="rgba(255,248,231,.6)" font-size="8">Naykila & HIVI! Performance</text>
+        <rect x="190" y="70" width="20" height="190" rx="2" fill="rgba(212,175,55,.12)"/>
+        <text x="200" y="170" text-anchor="middle" fill="rgba(212,175,55,.4)" font-size="7" transform="rotate(-90,200,170)">JALUR UTAMA</text>
+        <rect x="15" y="90" width="90" height="65" rx="8" fill="#7B2D8E" opacity=".7"/>
+        <text x="60" y="118" text-anchor="middle" fill="#FFF8E7" font-size="10" font-weight="600">🏪 BAZAAR</text>
+        <text x="60" y="133" text-anchor="middle" fill="rgba(255,248,231,.5)" font-size="7">50+ Stand</text>
+        <rect x="295" y="90" width="90" height="65" rx="8" fill="#7B2D8E" opacity=".7"/>
+        <text x="340" y="118" text-anchor="middle" fill="#FFF8E7" font-size="10" font-weight="600">🍜 FOOD COURT</text>
+        <text x="340" y="133" text-anchor="middle" fill="rgba(255,248,231,.5)" font-size="7">Various Menu</text>
+        <rect x="115" y="90" width="65" height="50" rx="8" fill="rgba(212,175,55,.25)" stroke="rgba(212,175,55,.4)"/>
+        <text x="147" y="112" text-anchor="middle" fill="#FFD700" font-size="9" font-weight="600">🕌 MUSHOLA</text>
+        <text x="147" y="126" text-anchor="middle" fill="rgba(255,215,0,.5)" font-size="7">Lantai 2</text>
+        <rect x="220" y="90" width="55" height="50" rx="8" fill="rgba(74,14,78,.6)" stroke="rgba(123,45,142,.4)"/>
+        <text x="247" y="120" text-anchor="middle" fill="#B565D9" font-size="9" font-weight="600">🚻 TOILET</text>
+        <rect x="15" y="175" width="90" height="55" rx="8" fill="rgba(255,107,157,.2)" stroke="rgba(255,107,157,.3)"/>
+        <text x="60" y="200" text-anchor="middle" fill="#FF6B9D" font-size="10" font-weight="600">🎮 GAMES</text>
+        <text x="60" y="215" text-anchor="middle" fill="rgba(255,107,157,.5)" font-size="7">Booth Mini Games</text>
+        <rect x="295" y="175" width="90" height="55" rx="8" fill="rgba(184,134,11,.25)" stroke="rgba(184,134,11,.4)"/>
+        <text x="340" y="200" text-anchor="middle" fill="#D4AF37" font-size="10" font-weight="600">📸 PHOTOBOOTH</text>
+        <text x="340" y="215" text-anchor="middle" fill="rgba(212,175,55,.5)" font-size="7">Free! By Sponsor</text>
+        <rect x="295" y="255" width="90" height="45" rx="8" fill="rgba(74,14,78,.5)" stroke="rgba(123,45,142,.3)"/>
+        <text x="340" y="282" text-anchor="middle" fill="rgba(181,101,217,.7)" font-size="9" font-weight="600">🅿️ AREA PARKIR</text>
+        <rect x="170" y="265" width="60" height="35" rx="6" fill="#D4AF37" opacity=".9"/>
+        <text x="200" y="282" text-anchor="middle" fill="#1a0a2e" font-size="9" font-weight="800">GERBANG</text>
+        <text x="200" y="293" text-anchor="middle" fill="rgba(26,10,46,.6)" font-size="7">UTAMA</text>
+        <text x="200" y="258" text-anchor="middle" fill="rgba(212,175,55,.5)" font-size="14">⬆</text>
+        <text x="60" y="255" text-anchor="middle" fill="rgba(255,248,231,.3)" font-size="7">🎯 Area Lomba</text>
+        <rect x="25" y="260" width="70" height="18" rx="4" fill="rgba(255,107,157,.1)" stroke="rgba(255,107,157,.15)" stroke-dasharray="3"/>
+      </svg>
+    </div>
+    <a href="https://maps.google.com/?q=SMK+Maestro+Islamic+School+Banjarmasin" target="_blank" class="btn-gold anim-in anim-d4" style="margin-top:12px;font-size:12px;padding:10px 24px">
+      <span class="iconify" data-icon="mdi:map-marker" style="font-size:16px"></span> Buka di Google Maps
+    </a>
+  </div>
+</div>
+
+<!-- ==================== SLIDE 4: RANGKAIAN ACARA ==================== -->
+<div class="slide" id="slide-3">
+  <div class="slide-inner">
+    <div id="sparkles-3"></div>
+    <p class="section-sub anim-in">Jadwal Kerajaan</p>
+    <h2 class="section-title anim-in anim-d1" style="font-size:clamp(18px,4.5vw,26px)">Rangkaian Acara</h2>
+    <div class="ornament-line anim-in anim-d1">⚜</div>
+    <div class="timeline anim-in anim-d2" style="width:100%;max-width:400px">
+      <div class="tl-item">
+        <div class="tl-time">08.00 - 08.30</div>
+        <div class="tl-title">👑 Upacara Pembukaan Kerajaan</div>
+        <div class="tl-desc">Prosesi pembukaan resmi oleh Kepala Sekolah & Bupati Tamu</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">08.30 - 10.00</div>
+        <div class="tl-title">🎭 Pentas Seni Antar Kelas</div>
+        <div class="tl-desc">Tari, drama musikal, & penampilan kreatif siswa</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">10.00 - 12.00</div>
+        <div class="tl-title">⚔️ Lomba Kerajaan</div>
+        <div class="tl-desc">Futsal, e-sports, fashion show, & lomba kreativitas</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">12.00 - 13.30</div>
+        <div class="tl-title">🍜 Ishoma & Bazaar</div>
+        <div class="tl-desc">Istirahat shalat & jelajahi 50+ stand bazaar & food court</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">13.30 - 14.30</div>
+        <div class="tl-title">🎮 Fun Games & Doorprize</div>
+        <div class="tl-desc">Mini games interaktif & pembagian doorprize menarik!</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">14.30 - 15.30</div>
+        <div class="tl-title">⭐ PENAMPILAN NAYKILA</div>
+        <div class="tl-desc">Akustik session spesial langsung dari Naykila!</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">15.30 - 16.30</div>
+        <div class="tl-title">🌟 PENAMPILAN HIVI!</div>
+        <div class="tl-desc">Konser puncak! HIVI! membawakan hits terbaiknya!</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">16.30 - 17.00</div>
+        <div class="tl-title">🎆 Penutupan & Fireworks</div>
+        <div class="tl-desc">Penutupan megah dengan kembang api & penyerahan piala</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SLIDE 5: STAR GUEST ==================== -->
+<div class="slide" id="slide-4">
+  <div class="slide-inner">
+    <div id="sparkles-4"></div>
+    <p class="section-sub anim-in">Bintang Tamu Kerajaan</p>
+    <h2 class="section-title anim-in anim-d1" style="font-size:clamp(18px,4.5vw,26px)">Star Guest</h2>
+    <div class="ornament-line anim-in anim-d1">✦</div>
+    <div class="artist-section">
+      <div class="poster-frame anim-in anim-d2" style="--frame-grad:linear-gradient(135deg, #FF6B9D, #FFD700, #FF6B9D, #FFB6D5, #FF6B9D, #FFD700)">
+        <div class="frame-crown">👑</div>
+        <span class="frame-ornament fo-tl">✦</span>
+        <span class="frame-ornament fo-tr" style="animation-delay:.5s">✦</span>
+        <span class="frame-ornament fo-bl" style="animation-delay:1s">✦</span>
+        <span class="frame-ornament fo-br" style="animation-delay:1.5s">✦</span>
+        <div class="poster-img-wrap">
+          <span class="poster-badge badge-naykila">⭐ Special Guest</span>
+          <img src="https://z-cdn-media.chatglm.cn/files/80e33e1d-dd39-44a8-af34-e60a3cc67c06.jpg?auth_key=1886322693-c4dbc68f84ab4f91a85994becafdac05-0-d0cc21acd8f0401f07f38405a276f398" alt="Naykila" class="poster-img">
+        </div>
+      </div>
+      <div class="poster-info anim-in anim-d2">
+        <div class="poster-name" style="color:var(--pink-l)">NAYKILA</div>
+        <div class="poster-desc">Penyanyi muda berbakat dengan suara emas & pesona memikat. Siap menghiburmu dengan performance spesial di panggung kerajaan! 🎤✨</div>
+      </div>
+      <div class="poster-divider anim-in anim-d3">⚜</div>
+      <div class="poster-frame anim-in anim-d3" style="--frame-grad:linear-gradient(135deg, #FFD700, #D4AF37, #B565D9, #FFD700, #D4AF37, #FF6B9D)">
+        <div class="frame-crown">👑</div>
+        <span class="frame-ornament fo-tl">⭐</span>
+        <span class="frame-ornament fo-tr" style="animation-delay:.7s">⭐</span>
+        <span class="frame-ornament fo-bl" style="animation-delay:1.2s">⭐</span>
+        <span class="frame-ornament fo-br" style="animation-delay:1.7s">⭐</span>
+        <div class="poster-img-wrap">
+          <span class="poster-badge badge-hivi">🌟 Headliner</span>
+          <img src="https://z-cdn-media.chatglm.cn/files/de498405-4ad4-4e2d-9514-89b3cae45a4b.jpg?auth_key=1886322693-19c252181f7c4b5792f8a0cb9d314cfd-0-4e75186bed157c9e605f4cf607e59d01" alt="HIVI!" class="poster-img">
+        </div>
+      </div>
+      <div class="poster-info anim-in anim-d3">
+        <div class="poster-name" style="color:var(--gold-l)">HIVI!</div>
+        <div class="poster-desc">Band pop papan atas Indonesia! Bakal bawakan hits seperti "Pelangi", "Siapkah Kau Tuk Jatuh Cinta Lagi", dan banyak lagi! 🎶🔥</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SLIDE 6: HARGA TIKET ==================== -->
+<div class="slide" id="slide-5">
+  <div class="slide-inner">
+    <div id="sparkles-5"></div>
+    <p class="section-sub anim-in">Tiket Masuk Kerajaan</p>
+    <h2 class="section-title anim-in anim-d1" style="font-size:clamp(18px,4.5vw,26px)">Harga Tiket</h2>
+    <div class="ornament-line anim-in anim-d1">⚜</div>
+    <div class="tickets-grid anim-in anim-d2">
+      <div class="ticket-card">
+        <div class="ticket-header">
+          <span class="ticket-tier">Presale</span>
+          <span class="ticket-tag tag-presale">Early Bird</span>
+        </div>
+        <div class="ticket-price">Rp 20K <small>/orang</small></div>
+        <div class="ticket-benefits">
+          <span>✓ Akses Area Festival</span>
+          <span>✓ Bazaar & Food Court</span>
+          <span>✓ Fun Games</span>
+        </div>
+      </div>
+      <div class="ticket-card">
+        <div class="ticket-header">
+          <span class="ticket-tier">Regular</span>
+          <span class="ticket-tag tag-regular">Normal</span>
+        </div>
+        <div class="ticket-price">Rp 30K <small>/orang</small></div>
+        <div class="ticket-benefits">
+          <span>✓ Akses Area Festival</span>
+          <span>✓ Bazaar & Food Court</span>
+          <span>✓ Fun Games</span>
+          <span>✓ Doorprize</span>
+        </div>
+      </div>
+      <div class="ticket-card vip">
+        <div class="ticket-header">
+          <span class="ticket-tier">👑 VIP</span>
+          <span class="ticket-tag tag-vip">Premium</span>
+        </div>
+        <div class="ticket-price">Rp 55K <small>/orang</small></div>
+        <div class="ticket-benefits">
+          <span>✓ Semua Benefit Regular</span>
+          <span>✓ Zona Depan Stage</span>
+          <span>✓ Free Photobooth</span>
+          <span>✓ Merchandise Eksklusif</span>
+          <span>✓ Meet & Greet</span>
+        </div>
+      </div>
+    </div>
+    <p class="anim-in anim-d3" style="font-size:10px;color:rgba(255,248,231,.35);margin-top:14px;text-align:center">*Harga presale berlaku hingga 1 November 2025</p>
+  </div>
+</div>
+
+<!-- ==================== SLIDE 7: PEMBAYARAN ==================== -->
+<div class="slide" id="slide-6">
+  <div class="slide-inner">
+    <div id="sparkles-6"></div>
+    <p class="section-sub anim-in">Metode Pembayaran</p>
+    <h2 class="section-title anim-in anim-d1" style="font-size:clamp(18px,4.5vw,26px)">Cara Pembayaran</h2>
+    <div class="ornament-line anim-in anim-d1">✦</div>
+    <p class="anim-in anim-d2" style="font-size:13px;color:var(--gold-l);font-weight:600;text-align:center;margin-bottom:8px">atau Scan QRIS di bawah ini:</p>
+    <div class="qr-box anim-in anim-d2">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=MAESTRO-KINGDOM-FEST-2025-Pembayaran-Tiket&color=1a0a2e&bgcolor=FFFFFF&qzone=1&margin=4" alt="QRIS">
+    </div>
+    <p class="anim-in anim-d2" style="font-size:10px;color:rgba(255,248,231,.4);text-align:center">QRIS - All Payment</p>
+    <div class="ornament-line anim-in anim-d3" style="font-size:10px">atau transfer bank</div>
+    <div class="anim-in anim-d3" style="width:100%">
+      <div class="bank-item">
+        <div class="bank-logo" style="background:linear-gradient(135deg,#003D79,#0060AF)">BCA</div>
+        <div class="bank-info">
+          <div class="bank-name">Bank BCA</div>
+          <div class="bank-number">8270 1234 567</div>
+          <div class="bank-holder">a.n. Panitia Maestro Kingdom Fest</div>
+        </div>
+      </div>
+      <div class="bank-item">
+        <div class="bank-logo" style="background:linear-gradient(135deg,#F15A22,#FF6B35)">BNI</div>
+        <div class="bank-info">
+          <div class="bank-name">Bank BNI</div>
+          <div class="bank-number">0312 4567 890</div>
+          <div class="bank-holder">a.n. Panitia Maestro Kingdom Fest</div>
+        </div>
+      </div>
+      <div class="bank-item">
+        <div class="bank-logo" style="background:linear-gradient(135deg,#003366,#004B87)">MANDIRI</div>
+        <div class="bank-info">
+          <div class="bank-name">Bank Mandiri</div>
+          <div class="bank-number">1350 0987 654</div>
+          <div class="bank-holder">a.n. Panitia Maestro Kingdom Fest</div>
+        </div>
+      </div>
+    </div>
+    <div class="ornament-line anim-in anim-d4" style="font-size:10px">atau e-wallet</div>
+    <div class="ewallet-grid anim-in anim-d4" style="max-width:320px">
+      <div class="ewallet-item">
+        <div class="ewallet-icon" style="background:linear-gradient(135deg,#00AED6,#00D4AA)">GP</div>
+        <span class="ewallet-name">GoPay</span>
+      </div>
+      <div class="ewallet-item">
+        <div class="ewallet-icon" style="background:linear-gradient(135deg,#4C3494,#6B4FBF)">OV</div>
+        <span class="ewallet-name">OVO</span>
+      </div>
+      <div class="ewallet-item">
+        <div class="ewallet-icon" style="background:linear-gradient(135deg,#108EE9,#1DA1F2)">DN</div>
+        <span class="ewallet-name">DANA</span>
+      </div>
+      <div class="ewallet-item">
+        <div class="ewallet-icon" style="background:linear-gradient(135deg,#EE4D2D,#FF6533)">SP</div>
+        <span class="ewallet-name">ShopeePay</span>
+      </div>
+    </div>
+    <p class="anim-in anim-d5" style="font-size:10px;color:rgba(255,248,231,.35);margin-top:14px;text-align:center;line-height:1.6">Konfirmasi pembayaran ke:<br><strong style="color:var(--gold-l)">0812-3456-7890 (WhatsApp)</strong></p>
+  </div>
+</div>
+
+<!-- ==================== SLIDE 8: EYE CATCHING ==================== -->
+<div class="slide" id="slide-7">
+  <div class="slide-inner" style="justify-content:center;gap:0">
+    <div id="sparkles-7"></div>
+    <div class="ec-line">
+      <p style="text-align:center;font-size:14px;color:var(--pink);font-weight:600;letter-spacing:3px;text-transform:uppercase">Wait a minute...</p>
+    </div>
+    <div class="ec-line">
+      <p class="ec-big">
+        <span class="pink-text">KAMU GAK MAU</span><br>
+        <span class="shimmer-text">KETINGGALAN, KAN?</span>
+      </p>
+    </div>
+    <div class="ec-line">
+      <div class="ornament-line" style="margin:8px 0">✦</div>
+    </div>
+    <div class="ec-line">
+      <p class="ec-med">
+        <span style="color:var(--gold-l)">NAYKILA</span> & <span style="color:var(--pink-l)">HIVI!</span><br>
+        Tampil <strong style="color:#fff">LANGSUNG</strong> di depanmu!
+      </p>
+    </div>
+    <div class="ec-line">
+      <p class="ec-med" style="font-size:clamp(14px,3.5vw,18px)">
+        🎆 Kembang Api<br>
+        🎁 Doorprize Meriah<br>
+        🏪 50+ Stand Bazaar<br>
+        🎮 Games Seru
+      </p>
+    </div>
+    <div class="ec-line">
+      <p class="ec-small" style="margin-bottom:16px">Tiket presale terbatas! Hanya <strong style="color:var(--gold-l)">Rp 20.000</strong></p>
+      <button class="btn-gold" onclick="goToSlide(6)" style="font-size:13px;padding:14px 32px">
+        <span class="iconify" data-icon="mdi:ticket-confirmation" style="font-size:18px"></span>
+        BELI TIKET SEKARANG
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SLIDE 9: PENUTUP ==================== -->
+<div class="slide" id="slide-8">
+  <div class="slide-inner" style="justify-content:center;position:relative;overflow:hidden">
+    <div class="floating-ornament" style="top:5%;left:8%;font-size:22px;--dur:6s;--delay:0s;--x1:20px;--y1:-30px;--x2:-10px;--y2:-60px;--x3:30px;--y3:-20px;--r1:0deg;--r2:45deg;--r3:90deg;--r4:135deg">👑</div>
+    <div class="floating-ornament" style="top:12%;right:10%;font-size:18px;--dur:7s;--delay:.5s;--x1:-25px;--y1:20px;--x2:15px;--y2:-25px;--x3:-20px;--y3:10px;--r1:0deg;--r2:-30deg;--r3:-60deg;--r4:-90deg">⭐</div>
+    <div class="floating-ornament" style="top:30%;left:5%;font-size:16px;--dur:5s;--delay:1s;--x1:15px;--y1:25px;--x2:-20px;--y2:-15px;--x3:10px;--y3:30px;--r1:0deg;--r2:60deg;--r3:120deg;--r4:180deg">💎</div>
+    <div class="floating-ornament" style="top:25%;right:6%;font-size:20px;--dur:8s;--delay:.3s;--x1:-15px;--y1:-35px;--x2:25px;--y2:10px;--x3:-10px;--y3:-20px;--r1:0deg;--r2:-45deg;--r3:-90deg;--r4:-135deg">🌸</div>
+    <div class="floating-ornament" style="top:50%;left:12%;font-size:14px;--dur:6.5s;--delay:1.5s;--x1:20px;--y1:-20px;--x2:-30px;--y2:15px;--x3:10px;--y3:-25px;--r1:0deg;--r2:30deg;--r3:60deg;--r4:90deg">✨</div>
+    <div class="floating-ornament" style="top:45%;right:12%;font-size:24px;--dur:7.5s;--delay:.8s;--x1:-20px;--y1:30px;--x2:10px;--y2:-20px;--x3:-25px;--y3:15px;--r1:0deg;--r2:-60deg;--r3:-120deg;--r4:-180deg">🎵</div>
+    <div class="floating-ornament" style="top:65%;left:8%;font-size:17px;--dur:5.5s;--delay:2s;--x1:25px;--y1:-15px;--x2:-15px;--y2:25px;--x3:20px;--y3:-10px;--r1:0deg;--r2:90deg;--r3:180deg;--r4:270deg">🎊</div>
+    <div class="floating-ornament" style="top:70%;right:8%;font-size:15px;--dur:6.8s;--delay:1.2s;--x1:-18px;--y1:-25px;--x2:22px;--y2:18px;--x3:-12px;--y3:-30px;--r1:0deg;--r2:45deg;--r3:90deg;--r4:135deg">🦋</div>
+    <div class="floating-ornament" style="top:85%;left:15%;font-size:19px;--dur:7.2s;--delay:.6s;--x1:15px;--y1:-20px;--x2:-25px;--y2:10px;--x3:20px;--y3:-15px;--r1:0deg;--r2:-30deg;--r3:-60deg;--r4:-90deg">🎀</div>
+    <div class="floating-ornament" style="top:88%;right:15%;font-size:16px;--dur:5.8s;--delay:1.8s;--x1:-20px;--y1:15px;--x2:10px;--y2:-25px;--x3:-15px;--y3:20px;--r1:0deg;--r2:60deg;--r3:120deg;--r4:180deg">🌙</div>
+    <div class="floating-ornament" style="top:40%;left:50%;font-size:13px;--dur:6.2s;--delay:2.5s;--x1:-30px;--y1:-20px;--x2:20px;--y2:25px;--x3:-15px;--y3:-10px;--r1:0deg;--r2:45deg;--r3:90deg;--r4:135deg">💫</div>
+    <div class="floating-ornament" style="top:15%;left:45%;font-size:12px;--dur:8.5s;--delay:3s;--x1:25px;--y1:15px;--x2:-20px;--y2:-30px;--x3:15px;--y3:20px;--r1:0deg;--r2:-45deg;--r3:-90deg;--r4:-135deg">🏆</div>
+
+    <div style="position:relative;z-index:2;text-align:center">
+      <div class="anim-in gentle-float" style="font-size:40px;margin-bottom:8px">👑</div>
+      <p class="section-sub anim-in anim-d1" style="font-size:clamp(26px,7vw,40px)">Terima Kasih</p>
+      <div class="ornament-line anim-in anim-d1">⚜</div>
+      <div class="royal-frame anim-in anim-d2" style="width:100%">
+        <span class="corner c-tl"></span><span class="corner c-tr"></span><span class="corner c-bl"></span><span class="corner c-br"></span>
+        <p style="font-family:'Playfair Display',serif;font-size:14px;line-height:1.9;color:rgba(255,248,231,.75);font-style:italic;text-align:center">
+          "Sampai jumpa di <strong style="color:var(--gold-l);font-style:normal">Maestro Kingdom Fest 2025</strong>, tempat di mana kenangan indah masa muda terukir bersama. Bawa pulang cerita, tawa, dan kebahagiaan yang tak akan pernah terlupakan."<br><br>
+          <span style="color:var(--pink);font-family:'Great Vibes',cursive;font-size:18px">— Panitia MKF 2025</span>
+        </p>
+      </div>
+      <div class="ornament-line anim-in anim-d3" style="font-size:10px">Sponsor & Partner</div>
+      <div class="sponsor-grid anim-in anim-d3">
+        <div class="sponsor-item"><div class="sponsor-icon">📸</div><span class="sponsor-name">FotoBooth<br>Corner</span></div>
+        <div class="sponsor-item"><div class="sponsor-icon">🍜</div><span class="sponsor-name">Shilin<br>Restaurant</span></div>
+        <div class="sponsor-item"><div class="sponsor-icon">🍪</div><span class="sponsor-name">Dubai Chewe<br>Cookies</span></div>
+        <div class="sponsor-item"><div class="sponsor-icon">🥤</div><span class="sponsor-name">Es Teh<br>Manis</span></div>
+        <div class="sponsor-item"><div class="sponsor-icon">🎂</div><span class="sponsor-name">Bakerly<br>Cake</span></div>
+        <div class="sponsor-item"><div class="sponsor-icon">📱</div><span class="sponsor-name">Cell<br>World</span></div>
+        <div class="sponsor-item"><div class="sponsor-icon">🎓</div><span class="sponsor-name">Bimbel<br>Nusantara</span></div>
+        <div class="sponsor-item"><div class="sponsor-icon">🏍️</div><span class="sponsor-name">Honda<br>Union</span></div>
+        <div class="sponsor-item"><div class="sponsor-icon">📡</div><span class="sponsor-name">Radio<br>Banjar</span></div>
+        <div class="sponsor-item"><div class="sponsor-icon">☕</div><span class="sponsor-name">Kopi<br>Kenangan</span></div>
+        <div class="sponsor-item"><div class="sponsor-icon">🍽️</div><span class="sponsor-name">Ayam Geprek<br>Joss</span></div>
+        <div class="sponsor-item"><div class="sponsor-icon">🏢</div><span class="sponsor-name">CV Maestro<br>Group</span></div>
+      </div>
+      <div class="ornament-line anim-in anim-d4" style="font-size:10px;margin-top:20px">✦</div>
+      <p class="anim-in anim-d4" style="font-size:10px;color:rgba(255,248,231,.3);text-align:center;line-height:1.8;margin-top:4px">
+        © 2025 SMK Maestro Islamic School Banjarmasin<br>
+        Maestro Kingdom Fest — Where Dreams Come Alive ✨
+      </p>
+      <div class="anim-in anim-d5" style="margin-top:16px;display:flex;gap:12px;justify-content:center">
+        <a href="#" style="width:36px;height:36px;border-radius:50%;border:1px solid rgba(212,175,55,.2);display:flex;align-items:center;justify-content:center;color:var(--gold);text-decoration:none;transition:all .3s" onmouseover="this.style.background='var(--gold)';this.style.color='var(--deep)'" onmouseout="this.style.background='transparent';this.style.color='var(--gold)'"><span class="iconify" data-icon="mdi:instagram" style="font-size:18px"></span></a>
+        <a href="#" style="width:36px;height:36px;border-radius:50%;border:1px solid rgba(212,175,55,.2);display:flex;align-items:center;justify-content:center;color:var(--gold);text-decoration:none;transition:all .3s" onmouseover="this.style.background='var(--gold)';this.style.color='var(--deep)'" onmouseout="this.style.background='transparent';this.style.color='var(--gold)'"><span class="iconify" data-icon="mdi:tic-toc" style="font-size:18px"></span></a>
+        <a href="#" style="width:36px;height:36px;border-radius:50%;border:1px solid rgba(212,175,55,.2);display:flex;align-items:center;justify-content:center;color:var(--gold);text-decoration:none;transition:all .3s" onmouseover="this.style.background='var(--gold)';this.style.color='var(--deep)'" onmouseout="this.style.background='transparent';this.style.color='var(--gold)'"><span class="iconify" data-icon="mdi:youtube" style="font-size:18px"></span></a>
+        <a href="#" style="width:36px;height:36px;border-radius:50%;border:1px solid rgba(212,175,55,.2);display:flex;align-items:center;justify-content:center;color:var(--gold);text-decoration:none;transition:all .3s" onmouseover="this.style.background='var(--gold)';this.style.color='var(--deep)'" onmouseout="this.style.background='transparent';this.style.color='var(--gold)'"><span class="iconify" data-icon="mdi:whatsapp" style="font-size:18px"></span></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NAV BAR -->
+<div class="nav-bar" id="navBar">
+  <button class="nav-btn" id="btnPrev" onclick="prevSlide()">
+    <span class="iconify" data-icon="mdi:chevron-left"></span>
+  </button>
+  <div class="dots" id="dots"></div>
+  <button class="nav-btn" id="btnNext" onclick="nextSlide()">
+    <span class="iconify" data-icon="mdi:chevron-right"></span>
+  </button>
+</div>
+
+<script>
+let current = 0;
+const total = 9;
+const slides = [];
+const dotEls = [];
+
+for(let i = 0; i < total; i++) slides.push(document.getElementById('slide-' + i));
+
+const dotsContainer = document.getElementById('dots');
+for(let i = 0; i < total; i++){
+  const d = document.createElement('div');
+  d.className = 'dot';
+  d.onclick = () => goToSlide(i);
+  dotsContainer.appendChild(d);
+  dotEls.push(d);
+}
+
+function createSparkles(id, count = 15){
+  const c = document.getElementById(id);
+  if(!c) return;
+  for(let i = 0; i < count; i++){
+    const s = document.createElement('div');
+    s.className = 'bg-sparkle';
+    s.style.left = Math.random()*100+'%';
+    s.style.top = Math.random()*100+'%';
+    s.style.animationDelay = Math.random()*5+'s';
+    s.style.animationDuration = (2+Math.random()*4)+'s';
+    const sz = (2+Math.random()*3)+'px';
+    s.style.width = sz; s.style.height = sz;
+    c.appendChild(s);
+  }
+}
+for(let i = 0; i < total; i++) createSparkles('sparkles-'+i, 12);
+
+function updateUI(){
+  slides.forEach((s,i) => s.classList.toggle('active', i===current));
+  dotEls.forEach((d,i) => d.classList.toggle('active', i===current));
+  document.getElementById('btnPrev').disabled = current <= 0;
+  document.getElementById('btnNext').disabled = current >= total-1;
+  document.getElementById('navBar').classList.toggle('show', current > 0);
+}
+
+function nextSlide(){ if(current < total-1){ current++; updateUI(); } }
+function prevSlide(){ if(current > 0){ current--; updateUI(); } }
+function goToSlide(i){ if(i >= 0 && i < total){ current = i; updateUI(); } }
+
+/* ===== ENVELOPE ===== */
+let envelopeOpened = false;
+function openEnvelope(){
+  if(envelopeOpened) return;
+  envelopeOpened = true;
+  const seal = document.getElementById('seal');
+  const envelope = document.getElementById('envelope');
+  const wrap = document.getElementById('envelopeWrap');
+  seal.classList.add('pulse');
+  setTimeout(() => {
+    const r = seal.getBoundingClientRect();
+    const cx = r.left+r.width/2, cy = r.top+r.height/2;
+    for(let i = 0; i < 30; i++){
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const a = (i/30)*Math.PI*2, v = 60+Math.random()*120, sz = 3+Math.random()*7;
+      const cols = ['#FFD700','#FF6B9D','#B565D9','#FFF8E7','#C41E3A','#FFB6D5'];
+      p.style.cssText = `left:${cx}px;top:${cy}px;width:${sz}px;height:${sz}px;--tx:${Math.cos(a)*v}px;--ty:${Math.sin(a)*v}px;background:${cols[Math.floor(Math.random()*cols.length)]};`;
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 1000);
+    }
+  }, 300);
+  setTimeout(() => { seal.style.opacity='0'; seal.style.transform='translate(-50%,-50%) scale(0)'; }, 400);
+  setTimeout(() => { envelope.classList.add('opened'); }, 500);
+  setTimeout(() => { wrap.style.transition='all .6s ease'; wrap.style.opacity='0'; wrap.style.transform='scale(.8)'; }, 1500);
+  setTimeout(() => { current = 1; updateUI(); tryAutoPlay(); }, 2200);
+}
+
+/* ===== MUSIC PLAYER ===== */
+const audio = document.getElementById('bgMusic');
+const musicBtn = document.getElementById('musicBtn');
+const musicIcon = document.getElementById('musicIcon');
+const visualizer = document.getElementById('visualizer');
+let isPlaying = false;
+let musicTried = false;
+
+function setMusicUI(playing){
+  isPlaying = playing;
+  musicBtn.classList.toggle('playing', playing);
+  visualizer.classList.toggle('show', playing);
+  visualizer.classList.toggle('playing', playing);
+  musicIcon.setAttribute('data-icon', playing ? 'mdi:music-note' : 'mdi:music-note-off');
+}
+
+function toggleMusic(){
+  if(isPlaying){
+    audio.pause();
+    setMusicUI(false);
+  } else {
+    playAudio();
+  }
+}
+
+function playAudio(){
+  const promise = audio.play();
+  if(promise !== undefined){
+    promise.then(() => {
+      setMusicUI(true);
+      musicTried = true;
+    }).catch(() => {
+      // Browser blocked autoplay — will retry on next interaction
+      musicTried = true;
+    });
+  }
+}
+
+function tryAutoPlay(){
+  if(musicTried) return;
+  playAudio();
+}
+
+// Retry on ANY user interaction if autoplay was blocked
+['click','touchstart','touchend','keydown','scroll'].forEach(evt => {
+  document.addEventListener(evt, function onFirst(){
+    if(musicTried || isPlaying) return;
+    playAudio();
+  }, {once: false, passive: true});
+});
+
+// Update visualizer when audio actually plays/pauses
+audio.addEventListener('playing', () => setMusicUI(true));
+audio.addEventListener('pause', () => setMusicUI(false));
+audio.addEventListener('ended', () => { audio.currentTime = 0; audio.play(); });
+
+/* ===== TOUCH & KEYBOARD ===== */
+let touchStartX = 0, touchStartY = 0;
+document.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; touchStartY = e.changedTouches[0].screenY; }, {passive:true});
+document.addEventListener('touchend', e => {
+  if(current===0 && !envelopeOpened) return;
+  const dx = e.changedTouches[0].screenX - touchStartX;
+  const dy = e.changedTouches[0].screenY - touchStartY;
+  if(Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50){ dx < 0 ? nextSlide() : prevSlide(); }
+}, {passive:true});
+
+document.addEventListener('keydown', e => {
+  if(current===0 && !envelopeOpened) return;
+  if(e.key==='ArrowRight' || e.key===' '){ e.preventDefault(); nextSlide(); }
+  if(e.key==='ArrowLeft') prevSlide();
+});
+
+updateUI();
+</script>
+</body>
+</html>
