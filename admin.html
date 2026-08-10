@@ -969,8 +969,7 @@ function personalMessage(name) {
     const addr = $('fAddr').value.trim();
     const dress = $('fDress').value.trim();
     const notes = $('fNotes').value.trim();
-    const link = getFullLink();
-
+    const link = getFullLink(name);
     let caption = $('fCaption').value.trim();
 
     if (caption) {
@@ -1019,12 +1018,19 @@ function copyIndividual(name) {
     clip(personalMessage(name));
     toast('Undangan untuk ' + name + ' disalin', 'ok');
 }
+function buildLink(name = '') {
+    const baseUrl = 'https://gisyayuna0-blip.github.io/undangan_event_online2/';
+    const link = name
+        ? baseUrl + '?to=' + encodeURIComponent(name)
+        : baseUrl;
 
-function buildLink() {
-    const slug = $('fSlug').value.trim().replace(/\s+/g, '-').toLowerCase();
-    const link = 'gisyayuna0-blip.github.io/undangan_nikah_online2/konser.html' + (slug ? '?to=' + encodeURIComponent(slug) : '');
     $('linkOut').textContent = link;
     return link;
+}
+
+function getFullLink(name = '') {
+    return buildLink(name);
+}
 }
 
 function getFullLink() { return 'https://' + buildLink(); }
