@@ -779,7 +779,7 @@ Niki</textarea>
                             </div>
                             <p style="font-size:10px; color:var(--text-dim); margin-top:5px; line-height:1.4;">
                                 <i class="fas fa-info-circle" style="color:var(--purple-soft); margin-right:3px;"></i>
-                                Gambar ini akan dikirim bersama pesan WhatsApp. Gunakan URL gambar langsung (.jpg/.png).
+                                Thumbnail WhatsApp diambil dari <b>og:image</b> pada halaman undangan. Gunakan URL gambar langsung (.jpg/.png).
                             </p>
                         </div>
 
@@ -920,7 +920,7 @@ Konfirmasi kehadiran melalui link di undangan ini.</textarea>
                     <div style="display: flex; flex-direction: column; gap: 8px;">
                         <button class="share-row s-wa-img" id="shareWaImg">
                             <i class="fab fa-whatsapp" style="font-size:18px; color:#25D366;"></i>
-                            <span>Bagikan dengan Thumbnail</span>
+                            <span>Bagikan ke WhatsApp + Thumbnail</span>
                             <span class="share-badge img-badge"><i class="fas fa-image" style="margin-right:3px;"></i> gambar</span>
                         </button>
                         <button class="share-row s-wa" id="shareWa">
@@ -1089,49 +1089,20 @@ async function preloadThumbnailBlob() {
     }
 }
 
-async function shareWithImage(name) {
+function shareWithImage(name) {
+    /*
+     * WhatsApp tidak bisa dipaksa membuat thumbnail hanya dengan
+     * mengirim URL gambar. Thumbnail akan muncul dari Open Graph
+     * (og:image) pada halaman undangan yang dibagikan.
+     *
+     * Karena itu tombol dibuat langsung membuka WhatsApp dengan
+     * LINK UNDANGAN sebagai URL utama.
+     */
     const msg = personalMessageTextOnly(name);
-    const thumbUrl = $('fThumbnail').value.trim();
+    const waUrl = 'https://wa.me/?text=' + encodeURIComponent(msg);
 
-    if (!thumbUrl) {
-        shareWAIndividual(name);
-        return;
-    }
-
-    /* Coba Web Share API dengan file (mobile Chrome/Safari) */
-    if (navigator.share && navigator.canShare) {
-        let file = thumbnailBlob;
-        if (!file) {
-            try {
-                const resp = await fetch(thumbUrl, { mode: 'cors' });
-                const blob = await resp.blob();
-                file = new File([blob], 'poster.jpg', { type: blob.type || 'image/jpeg' });
-                thumbnailBlob = file;
-            } catch (e) {
-                file = null;
-            }
-        }
-
-        if (file) {
-            const shareData = { title: $('fEventName').value.trim(), text: msg };
-            if (navigator.canShare({ files: [file] })) {
-                shareData.files = [file];
-            }
-            try {
-                await navigator.share(shareData);
-                toast('Undangan dengan poster berhasil dibagikan ke ' + name, 'ok');
-                return;
-            } catch (e) {
-                if (e.name === 'AbortError') return;
-                /* Jika gagal, fallback */
-            }
-        }
-    }
-
-    /* Fallback: kirim teks dengan URL gambar di awal */
-    const msgWithImg = thumbUrl + '\n\n' + msg;
-    window.open('https://wa.me/?text=' + encodeURIComponent(msgWithImg), '_blank');
-    toast('Membuka WhatsApp untuk ' + name + ' (thumbnail via link)', 'inf');
+    window.location.href = waUrl;
+    toast('Membuka WhatsApp untuk ' + name, 'inf');
 }
 
 /* ===== END THUMBNAIL FUNCTIONS ===== */
@@ -1296,8 +1267,11 @@ function personalMessage(name) {
 }
 
 function shareWAIndividual(name) {
-    const msg = personalMessage(name);
-    window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+    const msg = personalMessageTextOnly(name);
+    const waUrl = 'https://wa.me/?text=' + encodeURIComponent(msg);
+
+    /* Langsung buka WhatsApp */
+    window.location.href = waUrl;
     toast('Membuka WhatsApp untuk ' + name, 'inf');
 }
 
