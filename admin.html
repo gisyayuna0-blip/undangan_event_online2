@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <meta property="og:image" content="https://gisyayuna0-blip.github.io/undangan_event_online2/konser.jpg">
+    <meta property="og:image" content="https://gisyayuna0-blip.github.io/undangan_event_online2/konser.jpg">
     <title>MAESTRO FEST — Admin Panel</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -54,7 +54,6 @@
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: var(--purple-soft); border-radius: 3px; }
 
-        /* Overlay lebih gelap karena background panggung konser punya area terang (neon, lampu) */
         body::before {
             content: '';
             position: fixed;
@@ -331,8 +330,26 @@
         }
         .share-row:hover { transform: translateY(-2px); }
         .share-row.s-wa:hover  { border-color: #25D366; box-shadow: 0 4px 20px rgba(37,211,102,.15); color: #25D366; }
+        .share-row.s-wa-img:hover  { border-color: #25D366; box-shadow: 0 4px 20px rgba(37,211,102,.2); color: #25D366; }
         .share-row.s-ig:hover  { border-color: #E1306C; box-shadow: 0 4px 20px rgba(225,48,108,.15); color: #E1306C; }
         .share-row.s-cp:hover  { border-color: var(--purple-soft); box-shadow: 0 4px 20px var(--accent-glow); color: var(--purple-pale); }
+        .share-row.s-dl:hover  { border-color: var(--blue-soft); box-shadow: 0 4px 20px rgba(142,175,212,.15); color: var(--blue-pale); }
+
+        .share-row .share-badge {
+            margin-left: auto;
+            font-size: 9px;
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-weight: 600;
+            letter-spacing: .5px;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+        .share-badge.img-badge {
+            background: rgba(37,211,102,.12);
+            color: #25D366;
+            border: 1px solid rgba(37,211,102,.25);
+        }
 
         .stat-chip {
             display: flex;
@@ -419,6 +436,92 @@
             background-clip: text;
         }
 
+        /* === THUMBNAIL STYLES === */
+        .thumb-input-wrap {
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+        }
+        .thumb-input-wrap .r-input { flex: 1; }
+        .thumb-preview-mini {
+            width: 44px; height: 44px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 1px solid var(--border);
+            flex-shrink: 0;
+            background: rgba(10,6,16,0.5);
+        }
+        .thumb-preview-mini.hidden { display: none; }
+
+        .thumb-share-preview {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            margin-bottom: 14px;
+            background: rgba(10,6,16,0.5);
+            transition: border-color .3s;
+        }
+        .thumb-share-preview:hover { border-color: var(--border-accent); }
+        .thumb-share-preview img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            display: block;
+        }
+        .thumb-share-preview .thumb-overlay {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            padding: 10px 12px;
+            background: linear-gradient(transparent, rgba(10,6,16,0.85));
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+        }
+        .thumb-overlay-label {
+            font-size: 10px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .thumb-overlay-check {
+            font-size: 11px;
+            color: var(--green);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .thumb-share-preview.empty {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 80px;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .thumb-share-preview.empty i { font-size: 20px; color: var(--text-dim); opacity: .35; }
+        .thumb-share-preview.empty span { font-size: 11px; color: var(--text-dim); }
+
+        .thumb-loading {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(10,6,16,0.7);
+            z-index: 2;
+        }
+        .thumb-loading .spinner {
+            width: 24px; height: 24px;
+            border: 2px solid var(--border);
+            border-top-color: var(--purple);
+            border-radius: 50%;
+            animation: spin .7s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* === END THUMBNAIL STYLES === */
+
         .autosave-bar {
             position: fixed;
             bottom: 0; left: 0; right: 0;
@@ -459,6 +562,7 @@
             align-items: center;
             gap: 9px;
             min-width: 240px;
+            max-width: 360px;
             box-shadow: 0 10px 40px rgba(0,0,0,.5);
             animation: tIn .35s ease-out, tOut .35s ease-in 2.5s forwards;
             backdrop-filter: blur(12px);
@@ -507,6 +611,46 @@
             text-transform: uppercase;
         }
 
+        /* Canvas poster modal */
+        .poster-modal-bg {
+            position: fixed;
+            inset: 0;
+            background: rgba(6,3,10,0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn .3s ease;
+        }
+        .poster-modal-bg.hidden { display: none; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .poster-modal {
+            background: var(--card);
+            border: 1px solid var(--border-accent);
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+            animation: modalSlide .35s ease-out;
+        }
+        @keyframes modalSlide { from { opacity: 0; transform: translateY(20px) scale(.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .poster-modal canvas {
+            width: 100%;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            margin-bottom: 16px;
+        }
+        .poster-modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
         @media (max-width: 768px) {
             .dash-grid { grid-template-columns: 1fr !important; }
             .stats-row { flex-direction: column; }
@@ -518,6 +662,8 @@
             .maestro-logo { gap: 10px; }
             .maestro-icon { width: 40px; height: 40px; font-size: 18px; }
             .maestro-text h1 { font-size: 22px; letter-spacing: 3px; }
+            .thumb-input-wrap { flex-direction: column; }
+            .thumb-preview-mini { width: 100%; height: 100px; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -536,6 +682,23 @@
 <div class="autosave-bar" id="autoSaveBar">
     <span class="dot"></span>
     <span id="autoSaveText">Menyimpan...</span>
+</div>
+
+<!-- Poster Download Modal -->
+<div class="poster-modal-bg hidden" id="posterModal">
+    <div class="poster-modal">
+        <div class="sec-head" style="justify-content:center; margin-bottom:14px;">
+            <div class="sec-ico"><i class="fas fa-image"></i></div>
+            <h2>Poster Undangan</h2>
+        </div>
+        <canvas id="posterCanvas" width="1080" height="1350"></canvas>
+        <p style="font-size:11px; color:var(--text-dim); margin-bottom:14px;">Gambar poster siap dibagikan ke WhatsApp, Instagram, atau media lainnya.</p>
+        <div class="poster-modal-actions">
+            <button class="btn-gold" id="posterDownloadBtn"><i class="fas fa-download"></i> Download Gambar</button>
+            <button class="btn-ghost" id="posterShareBtn"><i class="fab fa-whatsapp"></i> Bagikan</button>
+            <button class="btn-ghost" id="posterCloseBtn"><i class="fas fa-xmark"></i> Tutup</button>
+        </div>
+    </div>
 </div>
 
 <div style="position:relative; z-index:1;">
@@ -606,6 +769,20 @@ Sheila on 7
 Dewa 19
 Niki</textarea>
                         </div>
+
+                        <!-- THUMBNAIL INPUT -->
+                        <div>
+                            <label class="r-label">Thumbnail / Poster <span style="color:var(--pink-soft); font-weight:400; text-transform:none; letter-spacing:0;">(ditampilkan saat kirim WA)</span></label>
+                            <div class="thumb-input-wrap">
+                                <input type="text" class="r-input" id="fThumbnail" value="https://gisyayuna0-blip.github.io/undangan_event_online2/konser.jpg" placeholder="URL gambar poster...">
+                                <img class="thumb-preview-mini hidden" id="thumbMini" alt="Preview thumbnail" onerror="this.classList.add('hidden')">
+                            </div>
+                            <p style="font-size:10px; color:var(--text-dim); margin-top:5px; line-height:1.4;">
+                                <i class="fas fa-info-circle" style="color:var(--purple-soft); margin-right:3px;"></i>
+                                Gambar ini akan dikirim bersama pesan WhatsApp. Gunakan URL gambar langsung (.jpg/.png).
+                            </p>
+                        </div>
+
                         <div>
                             <label class="r-label">Genre / Format</label>
                             <div class="type-chips" id="typeChips">
@@ -694,7 +871,7 @@ Konfirmasi kehadiran melalui link di undangan ini.</textarea>
 
                     <p style="font-size:11px; color:var(--text-dim); margin-bottom:12px; line-height:1.5;">
                         <i class="fas fa-info-circle" style="color:var(--purple-soft); margin-right:4px;"></i>
-                        Setiap undangan bisa dibagikan personal — pesan otomatis menyebut nama penerima.
+                        Setiap undangan bisa dibagikan personal — pesan otomatis menyebut nama penerima dan menyertakan thumbnail poster.
                     </p>
 
                     <div style="display: flex; gap: 8px; margin-bottom: 10px;">
@@ -720,6 +897,12 @@ Konfirmasi kehadiran melalui link di undangan ini.</textarea>
                         <h2>Bagikan Undangan</h2>
                     </div>
 
+                    <!-- THUMBNAIL SHARE PREVIEW -->
+                    <div class="thumb-share-preview empty" id="thumbSharePreview">
+                        <i class="fas fa-image"></i>
+                        <span>Belum ada thumbnail</span>
+                    </div>
+
                     <div style="margin-bottom: 12px;">
                         <label class="r-label">Slug Kustom</label>
                         <div style="display: flex; align-items: center;">
@@ -735,9 +918,18 @@ Konfirmasi kehadiran melalui link di undangan ini.</textarea>
                     </div>
 
                     <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <button class="share-row s-wa-img" id="shareWaImg">
+                            <i class="fab fa-whatsapp" style="font-size:18px; color:#25D366;"></i>
+                            <span>Bagikan dengan Thumbnail</span>
+                            <span class="share-badge img-badge"><i class="fas fa-image" style="margin-right:3px;"></i> gambar</span>
+                        </button>
                         <button class="share-row s-wa" id="shareWa">
                             <i class="fab fa-whatsapp" style="font-size:18px; color:#25D366;"></i>
-                            <span>Bagikan ke Semua via WhatsApp</span>
+                            <span>Bagikan Teks Saja (WA)</span>
+                        </button>
+                        <button class="share-row s-dl" id="shareDl">
+                            <i class="fas fa-download" style="font-size:16px; color:var(--blue);"></i>
+                            <span>Download Poster Undangan</span>
                         </button>
                         <button class="share-row s-ig" id="shareIg">
                             <i class="fab fa-instagram" style="font-size:18px; color:#E1306C;"></i>
@@ -795,8 +987,9 @@ Konfirmasi kehadiran melalui link di undangan ini.</textarea>
 <script>
 let guests = [];
 let selectedType = 'Festival';
+let thumbnailBlob = null;
 const $ = id => document.getElementById(id);
-const fields = ['fEventName','fOrganizer','fLineup','fCustomType','fDay','fDate','fTime','fAddr','fDress','fQuota','fGreeting','fNotes','fCaption','fSlug'];
+const fields = ['fEventName','fOrganizer','fLineup','fThumbnail','fCustomType','fDay','fDate','fTime','fAddr','fDress','fQuota','fGreeting','fNotes','fCaption','fSlug'];
 let saveTimer = null;
 const AUTO_SAVE_DELAY = 800;
 const STORAGE_KEY = 'maestro_fest_admin';
@@ -808,6 +1001,7 @@ document.addEventListener('DOMContentLoaded', () => {
     buildLink();
     updatePreview();
     updateStats();
+    updateThumbnailPreview();
     spawnDust();
     observeFade();
     bindEvents();
@@ -818,6 +1012,7 @@ function bindEvents() {
         $(id).addEventListener('input', () => {
             updatePreview();
             if (id === 'fSlug') { buildLink(); updateStats(); }
+            if (id === 'fThumbnail') { updateThumbnailPreview(); preloadThumbnailBlob(); }
             scheduleAutoSave();
         });
     });
@@ -844,9 +1039,102 @@ function bindEvents() {
     $('gBatchBtn').addEventListener('click', addBatch);
     $('copyLinkBtn').addEventListener('click', copyLink);
     $('shareWa').addEventListener('click', shareWAMassal);
+    $('shareWaImg').addEventListener('click', shareWAMassalWithImage);
     $('shareIg').addEventListener('click', shareIG);
     $('shareCp').addEventListener('click', copyCaptionLink);
+    $('shareDl').addEventListener('click', openPosterModal);
+    $('posterDownloadBtn').addEventListener('click', downloadPoster);
+    $('posterShareBtn').addEventListener('click', sharePosterFromCanvas);
+    $('posterCloseBtn').addEventListener('click', () => $('posterModal').classList.add('hidden'));
+    $('posterModal').addEventListener('click', e => { if (e.target === $('posterModal')) $('posterModal').classList.add('hidden'); });
 }
+
+/* ===== THUMBNAIL FUNCTIONS ===== */
+
+function updateThumbnailPreview() {
+    const url = $('fThumbnail').value.trim();
+    const mini = $('thumbMini');
+    const shareBox = $('thumbSharePreview');
+
+    if (url) {
+        mini.src = url;
+        mini.classList.remove('hidden');
+        mini.onerror = () => mini.classList.add('hidden');
+        mini.onload = () => mini.classList.remove('hidden');
+
+        shareBox.className = 'thumb-share-preview';
+        shareBox.innerHTML =
+            '<div class="thumb-loading" id="thumbLoadSpin"><div class="spinner"></div></div>' +
+            '<img src="' + esc(url) + '" alt="Thumbnail poster" onerror="this.parentElement.className=\'thumb-share-preview empty\';this.parentElement.innerHTML=\'<i class=\\\'fas fa-image\\\'></i><span>Gambar gagal dimuat</span>\';" onload="const s=document.getElementById(\'thumbLoadSpin\');if(s)s.remove();">' +
+            '<div class="thumb-overlay">' +
+                '<span class="thumb-overlay-label"><i class="fas fa-image" style="margin-right:4px;"></i> Thumbnail Aktif</span>' +
+                '<span class="thumb-overlay-check"><i class="fas fa-check-circle"></i> Siap</span>' +
+            '</div>';
+    } else {
+        mini.classList.add('hidden');
+        shareBox.className = 'thumb-share-preview empty';
+        shareBox.innerHTML = '<i class="fas fa-image"></i><span>Belum ada thumbnail</span>';
+    }
+}
+
+async function preloadThumbnailBlob() {
+    const url = $('fThumbnail').value.trim();
+    if (!url) { thumbnailBlob = null; return; }
+    try {
+        const resp = await fetch(url, { mode: 'cors' });
+        const blob = await resp.blob();
+        thumbnailBlob = new File([blob], 'poster.jpg', { type: blob.type || 'image/jpeg' });
+    } catch (e) {
+        thumbnailBlob = null;
+    }
+}
+
+async function shareWithImage(name) {
+    const msg = personalMessageTextOnly(name);
+    const thumbUrl = $('fThumbnail').value.trim();
+
+    if (!thumbUrl) {
+        shareWAIndividual(name);
+        return;
+    }
+
+    /* Coba Web Share API dengan file (mobile Chrome/Safari) */
+    if (navigator.share && navigator.canShare) {
+        let file = thumbnailBlob;
+        if (!file) {
+            try {
+                const resp = await fetch(thumbUrl, { mode: 'cors' });
+                const blob = await resp.blob();
+                file = new File([blob], 'poster.jpg', { type: blob.type || 'image/jpeg' });
+                thumbnailBlob = file;
+            } catch (e) {
+                file = null;
+            }
+        }
+
+        if (file) {
+            const shareData = { title: $('fEventName').value.trim(), text: msg };
+            if (navigator.canShare({ files: [file] })) {
+                shareData.files = [file];
+            }
+            try {
+                await navigator.share(shareData);
+                toast('Undangan dengan poster berhasil dibagikan ke ' + name, 'ok');
+                return;
+            } catch (e) {
+                if (e.name === 'AbortError') return;
+                /* Jika gagal, fallback */
+            }
+        }
+    }
+
+    /* Fallback: kirim teks dengan URL gambar di awal */
+    const msgWithImg = thumbUrl + '\n\n' + msg;
+    window.open('https://wa.me/?text=' + encodeURIComponent(msgWithImg), '_blank');
+    toast('Membuka WhatsApp untuk ' + name + ' (thumbnail via link)', 'inf');
+}
+
+/* ===== END THUMBNAIL FUNCTIONS ===== */
 
 function renderTypeChips() {
     document.querySelectorAll('.type-chip').forEach(chip => {
@@ -933,7 +1221,7 @@ function render() {
             '<span class="g-name" title="' + esc(n) + '">' + esc(n) + '</span>' +
             '<span class="g-personal">personal</span>' +
             '<div class="g-act">' +
-                '<button class="g-btn g-wa" data-act="wa" data-idx="' + i + '" title="Kirim via WhatsApp"><i class="fab fa-whatsapp"></i></button>' +
+                '<button class="g-btn g-wa" data-act="wa-img" data-idx="' + i + '" title="Kirim dengan thumbnail"><i class="fab fa-whatsapp"></i></button>' +
                 '<button class="g-btn g-ig" data-act="ig" data-idx="' + i + '" title="Bagikan via Instagram"><i class="fab fa-instagram"></i></button>' +
                 '<button class="g-btn g-cp" data-act="cp" data-idx="' + i + '" title="Salin pesan personal"><i class="fas fa-copy"></i></button>' +
                 '<button class="g-btn g-del" data-act="del" data-idx="' + i + '" title="Hapus"><i class="fas fa-xmark"></i></button>' +
@@ -951,7 +1239,7 @@ function render() {
             const act = this.dataset.act;
             const idx = parseInt(this.dataset.idx);
             const name = guests[idx];
-            if (act === 'wa')  shareWAIndividual(name);
+            if (act === 'wa-img') shareWithImage(name);
             if (act === 'ig')  shareIGIndividual(name);
             if (act === 'cp')  copyIndividual(name);
             if (act === 'del') removeGuest(idx);
@@ -959,7 +1247,8 @@ function render() {
     });
 }
 
-function personalMessage(name) {
+/* Hanya teks pesan personal (tanpa URL gambar) */
+function personalMessageTextOnly(name) {
     const eventName = $('fEventName').value.trim();
     const organizer = $('fOrganizer').value.trim();
     const lineup = $('fLineup').value.trim();
@@ -1001,10 +1290,37 @@ function personalMessage(name) {
     return caption + link;
 }
 
+/* Pesan personal lengkap (dengan/without thumbnail URL tergantung mode) */
+function personalMessage(name) {
+    return personalMessageTextOnly(name);
+}
+
 function shareWAIndividual(name) {
     const msg = personalMessage(name);
     window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
     toast('Membuka WhatsApp untuk ' + name, 'inf');
+}
+
+async function shareWAMassalWithImage() {
+    if (!guests.length) { toast('Belum ada undangan untuk dibagikan', 'err'); return; }
+    const thumbUrl = $('fThumbnail').value.trim();
+
+    if (!thumbUrl) {
+        toast('Atur URL thumbnail terlebih dahulu di bagian Info Konser', 'err');
+        return;
+    }
+
+    /* Jika hanya 1 guest, langsung share dengan gambar */
+    if (guests.length === 1) {
+        await shareWithImage(guests[0]);
+        return;
+    }
+
+    /* Untuk banyak guest: coba Web Share API untuk yang pertama, sisanya gunakan fallback */
+    await shareWithImage(guests[0]);
+    if (guests.length > 1) {
+        toast('Dimulai dari: ' + guests[0] + ' — lanjutkan untuk ' + (guests.length - 1) + ' undangan lainnya', 'inf');
+    }
 }
 
 function shareIGIndividual(name) {
@@ -1061,6 +1377,291 @@ function clip(text) {
     });
 }
 
+/* ===== POSTER CANVAS GENERATION ===== */
+
+function openPosterModal() {
+    $('posterModal').classList.remove('hidden');
+    generatePosterCanvas();
+}
+
+function generatePosterCanvas() {
+    const canvas = $('posterCanvas');
+    const ctx = canvas.getContext('2d');
+    const W = 1080, H = 1350;
+    canvas.width = W;
+    canvas.height = H;
+
+    const eventName = $('fEventName').value.trim() || 'NAMA KONSER';
+    const organizer = $('fOrganizer').value.trim();
+    const type = selectedType === 'Lainnya' ? $('fCustomType').value.trim() : selectedType;
+    const lineup = $('fLineup').value.trim().split('\n').filter(Boolean);
+    const day = $('fDay').value.trim();
+    const date = $('fDate').value.trim();
+    const time = $('fTime').value.trim();
+    const addr = $('fAddr').value.trim();
+    const dress = $('fDress').value.trim();
+    const notes = $('fNotes').value.trim();
+    const link = getFullLink();
+    const thumbUrl = $('fThumbnail').value.trim();
+
+    /* Background gradient */
+    const bgGrad = ctx.createLinearGradient(0, 0, W, H);
+    bgGrad.addColorStop(0, '#0e0816');
+    bgGrad.addColorStop(0.5, '#140e22');
+    bgGrad.addColorStop(1, '#0c0912');
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(0, 0, W, H);
+
+    /* Glow effects */
+    const glow1 = ctx.createRadialGradient(W * 0.3, H * 0.2, 0, W * 0.3, H * 0.2, 400);
+    glow1.addColorStop(0, 'rgba(232,160,191,0.08)');
+    glow1.addColorStop(1, 'rgba(232,160,191,0)');
+    ctx.fillStyle = glow1;
+    ctx.fillRect(0, 0, W, H);
+
+    const glow2 = ctx.createRadialGradient(W * 0.7, H * 0.6, 0, W * 0.7, H * 0.6, 350);
+    glow2.addColorStop(0, 'rgba(142,175,212,0.06)');
+    glow2.addColorStop(1, 'rgba(142,175,212,0)');
+    ctx.fillStyle = glow2;
+    ctx.fillRect(0, 0, W, H);
+
+    let yOffset = 60;
+
+    /* Ornaments top */
+    ctx.fillStyle = 'rgba(184,154,212,0.4)';
+    ctx.font = '16px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('◆ ◆ ◆', W / 2, yOffset);
+    yOffset += 40;
+
+    /* Proudly presents */
+    ctx.fillStyle = 'rgba(154,144,171,0.7)';
+    ctx.font = '600 18px "DM Sans", sans-serif';
+    ctx.letterSpacing = '3px';
+    ctx.fillText('PROUDLY PRESENTS', W / 2, yOffset);
+    yOffset += 60;
+
+    /* Event name */
+    ctx.fillStyle = '#f5c8dd';
+    ctx.font = '800 62px "Playfair Display", serif';
+    ctx.fillText(eventName, W / 2, yOffset);
+    yOffset += 40;
+
+    /* Organizer */
+    if (organizer) {
+        ctx.fillStyle = 'rgba(151,120,184,0.8)';
+        ctx.font = '500 22px "DM Sans", sans-serif';
+        ctx.fillText('by ' + organizer, W / 2, yOffset);
+        yOffset += 35;
+    }
+
+    /* Type */
+    if (type) {
+        ctx.fillStyle = 'rgba(154,144,171,0.6)';
+        ctx.font = '600 16px "DM Sans", sans-serif';
+        ctx.fillText(type.toUpperCase(), W / 2, yOffset);
+        yOffset += 40;
+    }
+
+    /* Shimmer line */
+    const lineGrad = ctx.createLinearGradient(W * 0.2, 0, W * 0.8, 0);
+    lineGrad.addColorStop(0, 'rgba(199,125,163,0)');
+    lineGrad.addColorStop(0.3, 'rgba(199,125,163,0.5)');
+    lineGrad.addColorStop(0.5, 'rgba(184,154,212,0.7)');
+    lineGrad.addColorStop(0.7, 'rgba(142,175,212,0.5)');
+    lineGrad.addColorStop(1, 'rgba(142,175,212,0)');
+    ctx.fillStyle = lineGrad;
+    ctx.fillRect(W * 0.2, yOffset, W * 0.6, 1);
+    yOffset += 40;
+
+    /* Lineup */
+    if (lineup.length > 0) {
+        ctx.fillStyle = 'rgba(154,144,171,0.5)';
+        ctx.font = '600 14px "DM Sans", sans-serif';
+        ctx.fillText('LINEUP', W / 2, yOffset);
+        yOffset += 30;
+
+        ctx.fillStyle = '#d4c4e8';
+        ctx.font = '500 20px "DM Sans", sans-serif';
+        const lineupText = lineup.join('  •  ');
+        ctx.fillText(lineupText, W / 2, yOffset);
+        yOffset += 40;
+    }
+
+    /* Shimmer line */
+    ctx.fillStyle = lineGrad;
+    ctx.fillRect(W * 0.2, yOffset, W * 0.6, 1);
+    yOffset += 45;
+
+    /* Detail info */
+    ctx.textAlign = 'left';
+    const infoX = W * 0.15;
+    const iconW = 36;
+
+    const details = [];
+    if (day && date) details.push({ icon: '📅', text: day + ', ' + date });
+    else if (date) details.push({ icon: '📅', text: date });
+    if (time) details.push({ icon: '🕐', text: time });
+    if (addr) details.push({ icon: '📍', text: addr });
+    if (dress) details.push({ icon: '👕', text: 'Dress Code: ' + dress });
+
+    details.forEach(d => {
+        ctx.font = '20px sans-serif';
+        ctx.fillText(d.icon, infoX, yOffset);
+        ctx.fillStyle = '#f0eaf5';
+        ctx.font = '400 18px "DM Sans", sans-serif';
+        /* Truncate jika terlalu panjang */
+        let txt = d.text;
+        while (ctx.measureText(txt).width > W - infoX - iconW - 60 && txt.length > 10) {
+            txt = txt.slice(0, -1);
+        }
+        if (txt !== d.text) txt += '...';
+        ctx.fillText(txt, infoX + iconW, yOffset);
+        yOffset += 36;
+    });
+
+    /* Notes */
+    if (notes) {
+        yOffset += 15;
+        ctx.fillStyle = 'rgba(255,255,255,0.05)';
+        ctx.fillRect(infoX - 10, yOffset - 10, W - infoX * 2 + 20, 2);
+        yOffset += 10;
+
+        ctx.fillStyle = 'rgba(154,144,171,0.5)';
+        ctx.font = '600 13px "DM Sans", sans-serif';
+        ctx.fillText('CATATAN PENTING', infoX, yOffset);
+        yOffset += 24;
+
+        ctx.fillStyle = 'rgba(154,144,171,0.7)';
+        ctx.font = '400 15px "DM Sans", sans-serif';
+        const noteLines = notes.split('\n').filter(Boolean);
+        noteLines.slice(0, 4).forEach(line => {
+            let txt = line;
+            while (ctx.measureText(txt).width > W - infoX * 2 && txt.length > 10) {
+                txt = txt.slice(0, -1);
+            }
+            if (txt !== line) txt += '...';
+            ctx.fillText(txt, infoX, yOffset);
+            yOffset += 22;
+        });
+        if (noteLines.length > 4) {
+            ctx.fillText('+' + (noteLines.length - 4) + ' catatan lainnya...', infoX, yOffset);
+            yOffset += 22;
+        }
+    }
+
+    /* Link */
+    yOffset += 20;
+    ctx.fillStyle = 'rgba(255,255,255,0.05)';
+    ctx.fillRect(infoX - 10, yOffset, W - infoX * 2 + 20, 2);
+    yOffset += 30;
+
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'rgba(184,154,212,0.5)';
+    ctx.font = '600 14px "DM Sans", sans-serif';
+    ctx.fillText('BUKA UNDANGAN', W / 2, yOffset);
+    yOffset += 28;
+
+    /* Link text with background */
+    const linkText = link.length > 50 ? link.slice(0, 47) + '...' : link;
+    ctx.font = '500 16px "DM Sans", monospace';
+    const linkW = ctx.measureText(linkText).width + 40;
+    const linkX = (W - linkW) / 2;
+
+    ctx.fillStyle = 'rgba(184,154,212,0.08)';
+    roundRect(ctx, linkX, yOffset - 18, linkW, 36, 8);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(184,154,212,0.25)';
+    ctx.lineWidth = 1;
+    roundRect(ctx, linkX, yOffset - 18, linkW, 36, 8);
+    ctx.stroke();
+
+    ctx.fillStyle = '#b8d4f0';
+    ctx.fillText(linkText, W / 2, yOffset + 5);
+    yOffset += 50;
+
+    /* Ornaments bottom */
+    ctx.fillStyle = 'rgba(184,154,212,0.4)';
+    ctx.font = '16px sans-serif';
+    ctx.fillText('◆ ◆ ◆', W / 2, yOffset);
+
+    /* Load thumbnail image onto canvas if available */
+    if (thumbUrl) {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = function() {
+            /* Gambar kecil di pojok kanan bawah sebagai watermark */
+            const imgSize = 120;
+            const imgX = W - imgSize - 30;
+            const imgY = H - imgSize - 30;
+            ctx.save();
+            ctx.globalAlpha = 0.3;
+            roundRect(ctx, imgX - 4, imgY - 4, imgSize + 8, imgSize + 8, 10);
+            ctx.clip();
+            ctx.drawImage(img, imgX, imgY, imgSize, imgSize);
+            ctx.restore();
+            ctx.strokeStyle = 'rgba(184,154,212,0.2)';
+            ctx.lineWidth = 1;
+            roundRect(ctx, imgX - 4, imgY - 4, imgSize + 8, imgSize + 8, 10);
+            ctx.stroke();
+        };
+        img.src = thumbUrl;
+    }
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+    r = Math.max(0, Math.min(r, Math.min(w, h) / 2));
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.arcTo(x + w, y, x + w, y + r, r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
+    ctx.lineTo(x + r, y + h);
+    ctx.arcTo(x, y + h, x, y + h - r, r);
+    ctx.lineTo(x, y + r);
+    ctx.arcTo(x, y, x + r, y, r);
+    ctx.closePath();
+}
+
+function downloadPoster() {
+    const canvas = $('posterCanvas');
+    canvas.toBlob(blob => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = ($('fEventName').value.trim() || 'poster').replace(/\s+/g, '_') + '.jpg';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        toast('Poster berhasil didownload', 'ok');
+    }, 'image/jpeg', 0.92);
+}
+
+async function sharePosterFromCanvas() {
+    const canvas = $('posterCanvas');
+    canvas.toBlob(async blob => {
+        const file = new File([blob], 'undangan.jpg', { type: 'image/jpeg' });
+        const msg = $('fCaption').value.trim() + '\n\n' + getFullLink();
+
+        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+            try {
+                await navigator.share({ title: $('fEventName').value.trim(), text: msg, files: [file] });
+                toast('Poster berhasil dibagikan', 'ok');
+                $('posterModal').classList.add('hidden');
+            } catch (e) {
+                if (e.name !== 'AbortError') toast('Gagal membagikan, coba download manual', 'err');
+            }
+        } else {
+            downloadPoster();
+            toast('Browser tidak mendukung share gambar. Poster didownload otomatis.', 'inf');
+        }
+    }, 'image/jpeg', 0.92);
+}
+
+/* ===== UPDATE PREVIEW & STATS ===== */
+
 function updatePreview() {
     const eventName = $('fEventName').value.trim();
     const organizer = $('fOrganizer').value.trim();
@@ -1105,71 +1706,89 @@ function updateStats() {
     $('statLink').textContent = link.length > 24 ? '...' + link.slice(-21) : link;
     const ready = guests.length > 0 && $('fEventName').value.trim();
     const el = $('statStatus');
-    if (ready) { el.textContent = 'Siap Bagikan'; el.style.color = 'var(--green)'; }
-    else { el.textContent = 'Belum Siap'; el.style.color = 'var(--text-dim)'; }
+    if (ready) {
+        el.textContent = 'Siap Kirim';
+        el.style.color = 'var(--green)';
+        el.style.fontSize = '14px';
+    } else {
+        el.textContent = 'Belum Siap';
+        el.style.color = 'var(--text-dim)';
+        el.style.fontSize = '14px';
+    }
 }
+
+/* ===== SAVE & LOAD ===== */
 
 function save() {
     const data = {};
-    fields.forEach(id => data[id] = $(id).value);
-    data.guests = guests;
-    data.selectedType = selectedType;
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch {}
+    fields.forEach(id => { data[id] = $(id).value; });
+    data._guests = guests;
+    data._type = selectedType;
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch (e) {}
 }
 
 function load() {
     try {
-        const d = JSON.parse(localStorage.getItem(STORAGE_KEY));
-        if (!d) return;
-        fields.forEach(id => { if (d[id] !== undefined) $(id).value = d[id]; });
-        guests = Array.isArray(d.guests) ? d.guests : [];
-        selectedType = d.selectedType || '';
-    } catch {}
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const data = JSON.parse(raw);
+        fields.forEach(id => { if (data[id] !== undefined) $(id).value = data[id]; });
+        if (data._guests) guests = data._guests;
+        if (data._type) selectedType = data._type;
+    } catch (e) {}
 }
 
-function spawnDust() {
-    const c = $('dust');
-    const colors = ['dust-pink', 'dust-blue', 'dust-purple'];
-    for (let i = 0; i < 30; i++) {
-        const p = document.createElement('div');
-        const s = Math.random() * 2.5 + 0.8;
-        p.className = 'dust-p ' + colors[i % 3];
-        p.style.cssText =
-            'left:' + (Math.random() * 100) + '%;bottom:-10px;' +
-            'width:' + s + 'px;height:' + s + 'px;' +
-            'animation-duration:' + (Math.random() * 14 + 12) + 's;' +
-            'animation-delay:' + (Math.random() * 18) + 's;';
-        c.appendChild(p);
-    }
-}
-
-function observeFade() {
-    const obs = new IntersectionObserver(entries => {
-        entries.forEach((en, i) => {
-            if (en.isIntersecting) {
-                setTimeout(() => en.target.classList.add('show'), i * 60);
-                obs.unobserve(en.target);
-            }
-        });
-    }, { threshold: 0.08 });
-    document.querySelectorAll('.fi').forEach(el => obs.observe(el));
-}
+/* ===== TOAST ===== */
 
 function toast(msg, type) {
-    const t = document.createElement('div');
-    const cls = type === 'ok' ? 't-ok' : type === 'err' ? 't-err' : 't-inf';
-    const ico = type === 'ok' ? 'fa-circle-check' : type === 'err' ? 'fa-circle-exclamation' : 'fa-circle-info';
-    t.className = 't ' + cls;
-    t.innerHTML = '<i class="fas ' + ico + '"></i><span>' + esc(msg) + '</span>';
-    $('toasts').appendChild(t);
-    setTimeout(() => { if (t.parentNode) t.remove(); }, 3100);
+    const c = $('toasts');
+    const icons = { ok: 'fa-check-circle', err: 'fa-exclamation-circle', inf: 'fa-info-circle' };
+    const cls = { ok: 't-ok', err: 't-err', inf: 't-inf' };
+    const el = document.createElement('div');
+    el.className = 't ' + (cls[type] || 't-inf');
+    el.innerHTML = '<i class="fas ' + (icons[type] || icons.inf) + '"></i><span>' + esc(msg) + '</span>';
+    c.appendChild(el);
+    setTimeout(() => { if (el.parentNode) el.remove(); }, 3200);
 }
+
+/* ===== ESCAPE ===== */
 
 function esc(s) {
     const d = document.createElement('div');
     d.textContent = s;
     return d.innerHTML;
 }
+
+/* ===== DUST PARTICLES ===== */
+
+function spawnDust() {
+    const c = $('dust');
+    const colors = ['dust-pink', 'dust-blue', 'dust-purple'];
+    for (let i = 0; i < 28; i++) {
+        const p = document.createElement('div');
+        p.className = 'dust-p ' + colors[i % 3];
+        const size = Math.random() * 3 + 1.5;
+        p.style.cssText =
+            'width:' + size + 'px;height:' + size + 'px;' +
+            'left:' + (Math.random() * 100) + '%;' +
+            'bottom:' + (-Math.random() * 20) + '%;' +
+            'animation-duration:' + (Math.random() * 18 + 14) + 's;' +
+            'animation-delay:' + (Math.random() * 20) + 's;';
+        c.appendChild(p);
+    }
+}
+
+/* ===== FADE IN OBSERVER ===== */
+
+function observeFade() {
+    const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('show'); obs.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fi').forEach(el => obs.observe(el));
+}
+
+/* Preload thumbnail blob on init */
+preloadThumbnailBlob();
 </script>
 </body>
 </html>
